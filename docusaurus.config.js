@@ -61,31 +61,7 @@ const config = {
             23.04: {
               label: '⭐ 23.04',
               banner:'none',
-            },
-            '22.10': {
-              label: '22.10',
-              banner:'none',
-            },
-            22.04: {
-              label: '22.04',
-              banner:'none',
-            },
-            '21.10': {
-              label: '21.10',
-              banner:'none',
-            },
-            21.04: {
-              label: '21.04',
-              banner:'unmaintained',
-            },
-            '20.10': {
-              label: '20.10',
-              banner:'unmaintained',
-            },
-            20.04: {
-              label: '20.04',
-              banner:'unmaintained',
-            },
+            }
           },
         },
         blog: false,
