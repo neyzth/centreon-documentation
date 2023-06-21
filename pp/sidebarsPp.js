@@ -176,11 +176,11 @@ module.exports = {
       items: [
         {
           type: 'doc',
-          id: 'integrations/plugin-packs/procedures/applications-protocol-x509'
+          id: 'integrations/plugin-packs/procedures/applications-protocol-http'
         },
         {
           type: 'doc',
-          id: 'integrations/plugin-packs/procedures/applications-protocol-http'
+          id: 'integrations/plugin-packs/procedures/applications-protocol-x509'
         }
       ]
     },
@@ -211,10 +211,6 @@ module.exports = {
         {
           type: 'doc',
           id: 'integrations/plugin-packs/procedures/virtualization-vmware2-esx'
-        },
-        {
-          type: 'doc',
-          id: 'integrations/plugin-packs/procedures/virtualization-vmware2-esx-wsman'
         },
         {
           type: 'doc',
