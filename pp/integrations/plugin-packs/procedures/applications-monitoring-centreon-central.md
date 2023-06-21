@@ -33,7 +33,7 @@ The connector brings the following service templates (sorted by the host templat
 > The services listed above are created automatically when the **App-Monitoring-Centreon-Central** host template is used.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Not attached to a host template" label="Not attached to a host template">
 
 | Service Alias      | Service Template                                     | Service Description         |
 |:-------------------|:-----------------------------------------------------|:----------------------------|

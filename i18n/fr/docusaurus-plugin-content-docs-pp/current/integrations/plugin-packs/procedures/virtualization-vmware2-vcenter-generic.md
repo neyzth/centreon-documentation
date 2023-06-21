@@ -26,7 +26,7 @@ Le connecteur apporte les modèles de service suivants
 > Les services listés ci-dessus sont créés automatiquement lorsque le modèle d'hôte **Virt-VMWare2-VCenter** est utilisé.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Non rattachés à un modèle d'hôte" label="Non rattachés à un modèle d'hôte">
 
 | Alias                         | Modèle de service                                 | Description                                                                                                                                          | Découverte |
 |:------------------------------|:--------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|:-----------|
@@ -1413,7 +1413,7 @@ telle que celle-ci (remplacez les valeurs d'exemple par les vôtres) :
 La commande devrait retourner un message de sortie similaire à :
 
 ```bash
-OK:   | 'cluster.cpu.utilization.percentage'=16%;;;0;100 'cluster.cpu.utilization.mhz'=82MHz;;;0; 
+OK:   | 'cluster.cpu.utilization.percentage'=27%;;;0;100 'cluster.cpu.utilization.mhz'=1MHz;;;0; 
 ```
 
 ### Diagnostic des erreurs communes

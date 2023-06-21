@@ -53,7 +53,7 @@ Le connecteur apporte les modèles de service suivants
 > Les services listés ci-dessus sont créés automatiquement lorsque le modèle d'hôte **Cloud-Aws-Ec2-Spot-Fleet-Request** est utilisé.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Non rattachés à un modèle d'hôte" label="Non rattachés à un modèle d'hôte">
 
 | Alias                       | Modèle de service                                | Description                                                     |
 |:----------------------------|:-------------------------------------------------|:----------------------------------------------------------------|
@@ -562,7 +562,7 @@ telle que celle-ci (remplacez les valeurs d'exemple par les vôtres) :
 La commande devrait retourner un message de sortie similaire à :
 
 ```bash
-OK: CPU Utilization CPU Credit Balance CPU Credit Usage CPU Surplus Credit Balance CPU Surplus Credit Charged | 'ec2.cpu.utilization.percentage'=34;;;; 'ec2.cpu.credit.balance.count'=52;;;; 'ec2.cpu.credit.usage.count'=34;;;; 'ec2.cpu.credit.surplus.balance.count'=80;;;; 'ec2.cpu.credit.surplus.charged.count'=74;;;; 
+OK: CPU Utilization CPU Credit Balance CPU Credit Usage CPU Surplus Credit Balance CPU Surplus Credit Charged | 'ec2.cpu.utilization.percentage'=85;;;; 'ec2.cpu.credit.balance.count'=11;;;; 'ec2.cpu.credit.usage.count'=0;;;; 'ec2.cpu.credit.surplus.balance.count'=66;;;; 'ec2.cpu.credit.surplus.charged.count'=64;;;; 
 ```
 
 ### Diagnostic des erreurs communes

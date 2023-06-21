@@ -27,7 +27,7 @@ The connector brings the following service templates (sorted by the host templat
 > The services listed above are created automatically when the **OS-Windows-SNMP** host template is used.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Not attached to a host template" label="Not attached to a host template">
 
 | Service Alias        | Service Template                            | Service Description                                                                                     | Discovery  |
 |:---------------------|:--------------------------------------------|:--------------------------------------------------------------------------------------------------------|:-----------|
@@ -153,7 +153,15 @@ Coming soon
 
 ## Prerequisites
 
-Coming soon...
+### SNMP Configuration
+
+To use this pack, the SNMP service must be properly configured on your ressource.
+Please refer to the official documentation from the constructor.
+
+### Network flow
+
+The target server must be reachable from the Centreon poller on the UDP/161
+SNMP port.
 
 ## Installing the monitoring connector
 
@@ -435,7 +443,7 @@ is able to monitor a server using a command like this one (replace the sample va
 The expected command output is shown below:
 
 ```bash
-OK:   | 'cpu.utilization.percentage'=77%;;;0;100 'core.cpu.utilization.percentage'=88%;;;0;100 
+OK:   | 'cpu.utilization.percentage'=10%;;;0;100 'core.cpu.utilization.percentage'=89%;;;0;100 
 ```
 
 ### Troubleshooting

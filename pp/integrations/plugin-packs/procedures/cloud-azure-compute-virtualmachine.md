@@ -29,7 +29,7 @@ The connector brings the following service templates (sorted by the host templat
 > The services listed above are created automatically when the **Cloud-Azure-Compute-VirtualMachine** host template is used.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Not attached to a host template" label="Not attached to a host template">
 
 | Service Alias   | Service Template                                              | Service Description               |
 |:----------------|:--------------------------------------------------------------|:----------------------------------|
@@ -394,7 +394,7 @@ is able to monitor an Azure Instance using a command like this one (replace the 
 The expected command output is shown below:
 
 ```bash
-OK: Credits consumed Credits remaining Percentage | 'azvm.cpu.credits.consumed.count'=87;;;0; 'azvm.cpu.credits.remaining.count'=11;;;0; 'azvm.cpu.utilization.percentage'=68%;;;0;100 
+OK: Credits consumed Credits remaining Percentage | 'azvm.cpu.credits.consumed.count'=51;;;0; 'azvm.cpu.credits.remaining.count'=13;;;0; 'azvm.cpu.utilization.percentage'=9%;;;0;100 
 ```
 
 ### Troubleshooting

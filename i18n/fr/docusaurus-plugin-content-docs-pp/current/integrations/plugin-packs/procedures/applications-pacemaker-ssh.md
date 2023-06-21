@@ -294,7 +294,7 @@ telle que celle-ci (remplacez les valeurs d'exemple par les vôtres) :
 La commande devrait retourner un message de sortie similaire à :
 
 ```bash
-OK:             | 'cluster.nodes.online.count'=19;;;0; 'cluster.nodes.offline.count'=59;;;0; 'cluster.nodes.standby.count'=16;;;0; 'cluster.actions.failed.count'=43;;;0; 'resource.actions.failed.count'=27;;;0; 'resource.migration.failed.count'=31;;;0; 'clone_resource.actions.failed.count'=86;;;0; 'clone_resource.migration.failed.count'=92;;;0; 
+OK:             | 'cluster.nodes.online.count'=25;;;0; 'cluster.nodes.offline.count'=44;;;0; 'cluster.nodes.standby.count'=38;;;0; 'cluster.actions.failed.count'=65;;;0; 'resource.actions.failed.count'=30;;;0; 'resource.migration.failed.count'=23;;;0; 'clone_resource.actions.failed.count'=60;;;0; 'clone_resource.migration.failed.count'=30;;;0; 
 ```
 
 ### Diagnostic des erreurs communes

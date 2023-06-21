@@ -27,7 +27,7 @@ The connector brings the following service templates (sorted by the host templat
 > The services listed above are created automatically when the **Net-Cisco-Standard-SNMP** host template is used.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Not attached to a host template" label="Not attached to a host template">
 
 | Service Alias              | Service Template                                          | Service Description                           | Discovery  |
 |:---------------------------|:----------------------------------------------------------|:----------------------------------------------|:-----------|
@@ -800,7 +800,7 @@ is able to monitor a server using a command like this one (replace the sample va
 The expected command output is shown below:
 
 ```bash
-OK:           | 'aaa_servers.total.count'=32;;;0; 'aaa_server.authentication.requests.persecond'=42/s;;;0; 'aaa_server.authentication.requests.timeout.count'=42;;;0; 'aaa_server.authentication.transactions.succeeded.persecond'=60/s;;;0; 'aaa_server.authentication.roundtrip.time.milliseconds'=59ms;;;0; 'aaa_server.accounting.requests.persecond'=32/s;;;0; 'aaa_server.accounting.requests.timeout.count'=2;;;0; 'aaa_server.accounting.transactions.succeeded.persecond'=29/s;;;0; 'aaa_server.accounting.roundtrip.time.milliseconds'=99ms;;;0; 
+OK:           | 'aaa_servers.total.count'=71;;;0; 'aaa_server.authentication.requests.persecond'=8/s;;;0; 'aaa_server.authentication.requests.timeout.count'=7;;;0; 'aaa_server.authentication.transactions.succeeded.persecond'=12/s;;;0; 'aaa_server.authentication.roundtrip.time.milliseconds'=32ms;;;0; 'aaa_server.accounting.requests.persecond'=75/s;;;0; 'aaa_server.accounting.requests.timeout.count'=39;;;0; 'aaa_server.accounting.transactions.succeeded.persecond'=92/s;;;0; 'aaa_server.accounting.roundtrip.time.milliseconds'=45ms;;;0; 
 ```
 
 ### Troubleshooting

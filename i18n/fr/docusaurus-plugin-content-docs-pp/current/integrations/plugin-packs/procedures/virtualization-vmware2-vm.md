@@ -30,7 +30,7 @@ Le connecteur apporte les modèles de service suivants
 > Les services listés ci-dessus sont créés automatiquement lorsque le modèle d'hôte **Virt-VMWare2-VM** est utilisé.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Non rattachés à un modèle d'hôte" label="Non rattachés à un modèle d'hôte">
 
 | Alias              | Modèle de service                              | Description                                                                                               |
 |:-------------------|:-----------------------------------------------|:----------------------------------------------------------------------------------------------------------|
@@ -528,7 +528,7 @@ telle que celle-ci (remplacez les valeurs d'exemple par les vôtres) :
 La commande devrait retourner un message de sortie similaire à :
 
 ```bash
-OK:      | 'vm.cpu.utilization.percentage'=4%;;;0;100 'vm.cpu.utilization.mhz'=89MHz;;;0; 'vm.cpu.ready.percentage'=71%;;;0;100 'vm.core.cpu.utilization.percentage'=99MHz;;;0; 
+OK:      | 'vm.cpu.utilization.percentage'=18%;;;0;100 'vm.cpu.utilization.mhz'=98MHz;;;0; 'vm.cpu.ready.percentage'=44%;;;0;100 'vm.core.cpu.utilization.percentage'=53MHz;;;0; 
 ```
 
 ### Diagnostic des erreurs communes

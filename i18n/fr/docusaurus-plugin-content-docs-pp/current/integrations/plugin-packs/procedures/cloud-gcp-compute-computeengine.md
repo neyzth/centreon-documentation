@@ -292,7 +292,7 @@ telle que celle-ci (remplacez les valeurs d'exemple par les vôtres) :
 La commande devrait retourner un message de sortie similaire à :
 
 ```bash
-OK: cpu utilization: 22 cpu reserved cores: 69 | 'computeengine.cpu.utilization.percentage'=22%;;;0;100 'computeengine.cpu.reserved_cores.count'=69;;;; 
+OK: cpu utilization: 52 cpu reserved cores: 97 | 'computeengine.cpu.utilization.percentage'=52%;;;0;100 'computeengine.cpu.reserved_cores.count'=97;;;; 
 ```
 
 ### Diagnostic des erreurs communes

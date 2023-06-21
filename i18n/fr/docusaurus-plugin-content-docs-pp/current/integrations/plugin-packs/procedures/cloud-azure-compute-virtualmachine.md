@@ -30,7 +30,7 @@ Le connecteur apporte les modèles de service suivants
 > Les services listés ci-dessus sont créés automatiquement lorsque le modèle d'hôte **Cloud-Azure-Compute-VirtualMachine** est utilisé.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Non rattachés à un modèle d'hôte" label="Non rattachés à un modèle d'hôte">
 
 | Alias           | Modèle de service                                             | Description                                                                |
 |:----------------|:--------------------------------------------------------------|:---------------------------------------------------------------------------|
@@ -396,7 +396,7 @@ telle que celle-ci (remplacez les valeurs d'exemple par les vôtres) :
 La commande devrait retourner un message de sortie similaire à :
 
 ```bash
-OK: Credits consumed Credits remaining Percentage | 'azvm.cpu.credits.consumed.count'=87;;;0; 'azvm.cpu.credits.remaining.count'=11;;;0; 'azvm.cpu.utilization.percentage'=68%;;;0;100 
+OK: Credits consumed Credits remaining Percentage | 'azvm.cpu.credits.consumed.count'=51;;;0; 'azvm.cpu.credits.remaining.count'=13;;;0; 'azvm.cpu.utilization.percentage'=9%;;;0;100 
 ```
 
 ### Diagnostic des erreurs communes

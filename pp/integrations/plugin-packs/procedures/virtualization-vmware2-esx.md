@@ -30,7 +30,7 @@ The connector brings the following service templates (sorted by the host templat
 > The services listed above are created automatically when the **Virt-VMWare2-ESX** host template is used.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Not attached to a host template" label="Not attached to a host template">
 
 | Service Alias          | Service Template                                   | Service Description                                                              | Discovery  |
 |:-----------------------|:---------------------------------------------------|:---------------------------------------------------------------------------------|:-----------|
@@ -904,7 +904,7 @@ is able to monitor a server using a command like this one (replace the sample va
 The expected command output is shown below:
 
 ```bash
-OK:      | 'datastore.read.usage.bytespersecond'=53B/s;;;0; 'datastore.write.usage.bytespersecond'=29B/s;;;0; 'datastore.read.usage.bytespersecond'=41B/s;;;0; 'datastore.write.usage.bytespersecond'=38B/s;;;0; 
+OK:      | 'datastore.read.usage.bytespersecond'=38B/s;;;0; 'datastore.write.usage.bytespersecond'=83B/s;;;0; 'datastore.read.usage.bytespersecond'=44B/s;;;0; 'datastore.write.usage.bytespersecond'=5B/s;;;0; 
 ```
 
 ### Troubleshooting

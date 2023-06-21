@@ -29,7 +29,7 @@ The connector brings the following service templates (sorted by the host templat
 > The services listed above are created automatically when the **Virt-VMWare2-VM** host template is used.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Not attached to a host template" label="Not attached to a host template">
 
 | Service Alias      | Service Template                               | Service Description                                   |
 |:-------------------|:-----------------------------------------------|:------------------------------------------------------|
@@ -529,7 +529,7 @@ is able to monitor a server using a command like this one (replace the sample va
 The expected command output is shown below:
 
 ```bash
-OK:      | 'vm.cpu.utilization.percentage'=4%;;;0;100 'vm.cpu.utilization.mhz'=89MHz;;;0; 'vm.cpu.ready.percentage'=71%;;;0;100 'vm.core.cpu.utilization.percentage'=99MHz;;;0; 
+OK:      | 'vm.cpu.utilization.percentage'=18%;;;0;100 'vm.cpu.utilization.mhz'=98MHz;;;0; 'vm.cpu.ready.percentage'=44%;;;0;100 'vm.core.cpu.utilization.percentage'=53MHz;;;0; 
 ```
 
 ### Troubleshooting

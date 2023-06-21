@@ -26,7 +26,7 @@ Le connecteur apporte les modèles de service suivants
 > Les services listés ci-dessus sont créés automatiquement lorsque le modèle d'hôte **App-Protocol-HTTP** est utilisé.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Non rattachés à un modèle d'hôte" label="Non rattachés à un modèle d'hôte">
 
 | Alias                 | Modèle de service                         | Description                                                       |
 |:----------------------|:------------------------------------------|:------------------------------------------------------------------|
@@ -289,7 +289,7 @@ telle que celle-ci (remplacez les valeurs d'exemple par les vôtres) :
 La commande devrait retourner un message de sortie similaire à :
 
 ```bash
-OK:     | 'http.content.size.bytes'=32B;;;0; 'http.response.time.seconds'=43s;;;0; 'http.extracted.value.count'=66;;;; 
+OK:     | 'http.content.size.bytes'=17B;;;0; 'http.response.time.seconds'=15s;;;0; 'http.extracted.value.count'=66;;;; 
 ```
 
 ### Diagnostic des erreurs communes

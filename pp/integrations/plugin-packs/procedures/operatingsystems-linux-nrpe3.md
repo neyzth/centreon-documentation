@@ -29,7 +29,7 @@ The connector brings the following service templates (sorted by the host templat
 > The services listed above are created automatically when the **OS-Linux-NRPE3** host template is used.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Not attached to a host template" label="Not attached to a host template">
 
 | Service Alias       | Service Template                          | Service Description                                                                                                                                         | Discovery  |
 |:--------------------|:------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------|
@@ -567,7 +567,7 @@ is able to monitor a server using a command like this one (replace the sample va
 The expected command output is shown below:
 
 ```bash
-OK:  | 'command.exit.code.count'=16;;;; 
+OK:  | 'command.exit.code.count'=20;;;; 
 ```
 
 ### Troubleshooting

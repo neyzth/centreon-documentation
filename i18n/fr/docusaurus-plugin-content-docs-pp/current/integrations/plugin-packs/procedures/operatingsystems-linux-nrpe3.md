@@ -30,7 +30,7 @@ Le connecteur apporte les modèles de service suivants
 > Les services listés ci-dessus sont créés automatiquement lorsque le modèle d'hôte **OS-Linux-NRPE3** est utilisé.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Non rattachés à un modèle d'hôte" label="Non rattachés à un modèle d'hôte">
 
 | Alias               | Modèle de service                         | Description                                                                                                                                                                           | Découverte |
 |:--------------------|:------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------|
@@ -569,7 +569,7 @@ telle que celle-ci (remplacez les valeurs d'exemple par les vôtres) :
 La commande devrait retourner un message de sortie similaire à :
 
 ```bash
-OK:  | 'command.exit.code.count'=16;;;; 
+OK:  | 'command.exit.code.count'=20;;;; 
 ```
 
 ### Diagnostic des erreurs communes

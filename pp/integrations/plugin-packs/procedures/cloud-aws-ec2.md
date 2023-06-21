@@ -52,7 +52,7 @@ The connector brings the following service templates (sorted by the host templat
 > The services listed above are created automatically when the **Cloud-Aws-Ec2-Spot-Fleet-Request** host template is used.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Not attached to a host template" label="Not attached to a host template">
 
 | Service Alias               | Service Template                                 | Service Description         |
 |:----------------------------|:-------------------------------------------------|:----------------------------|
@@ -561,7 +561,7 @@ is able to monitor an AWS Instance using a command like this one (replace the sa
 The expected command output is shown below:
 
 ```bash
-OK: CPU Utilization CPU Credit Balance CPU Credit Usage CPU Surplus Credit Balance CPU Surplus Credit Charged | 'ec2.cpu.utilization.percentage'=34;;;; 'ec2.cpu.credit.balance.count'=52;;;; 'ec2.cpu.credit.usage.count'=34;;;; 'ec2.cpu.credit.surplus.balance.count'=80;;;; 'ec2.cpu.credit.surplus.charged.count'=74;;;; 
+OK: CPU Utilization CPU Credit Balance CPU Credit Usage CPU Surplus Credit Balance CPU Surplus Credit Charged | 'ec2.cpu.utilization.percentage'=85;;;; 'ec2.cpu.credit.balance.count'=11;;;; 'ec2.cpu.credit.usage.count'=0;;;; 'ec2.cpu.credit.surplus.balance.count'=66;;;; 'ec2.cpu.credit.surplus.charged.count'=64;;;; 
 ```
 
 ### Troubleshooting

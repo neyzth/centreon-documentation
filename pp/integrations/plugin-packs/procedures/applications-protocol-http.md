@@ -25,7 +25,7 @@ The connector brings the following service templates (sorted by the host templat
 > The services listed above are created automatically when the **App-Protocol-HTTP** host template is used.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Not attached to a host template" label="Not attached to a host template">
 
 | Service Alias         | Service Template                          | Service Description                         |
 |:----------------------|:------------------------------------------|:--------------------------------------------|
@@ -288,7 +288,7 @@ is able to monitor a server using a command like this one (replace the sample va
 The expected command output is shown below:
 
 ```bash
-OK:     | 'http.content.size.bytes'=32B;;;0; 'http.response.time.seconds'=43s;;;0; 'http.extracted.value.count'=66;;;; 
+OK:     | 'http.content.size.bytes'=17B;;;0; 'http.response.time.seconds'=15s;;;0; 'http.extracted.value.count'=66;;;; 
 ```
 
 ### Troubleshooting

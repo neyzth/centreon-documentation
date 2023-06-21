@@ -291,7 +291,7 @@ is able to monitor a GCP Instance using a command like this one (replace the sam
 The expected command output is shown below:
 
 ```bash
-OK: cpu utilization: 22 cpu reserved cores: 69 | 'computeengine.cpu.utilization.percentage'=22%;;;0;100 'computeengine.cpu.reserved_cores.count'=69;;;; 
+OK: cpu utilization: 52 cpu reserved cores: 97 | 'computeengine.cpu.utilization.percentage'=52%;;;0;100 'computeengine.cpu.reserved_cores.count'=97;;;; 
 ```
 
 ### Troubleshooting

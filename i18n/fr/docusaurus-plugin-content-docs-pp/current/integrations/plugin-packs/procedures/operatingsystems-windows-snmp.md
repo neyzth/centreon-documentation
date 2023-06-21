@@ -28,7 +28,7 @@ Le connecteur apporte les modèles de service suivants
 > Les services listés ci-dessus sont créés automatiquement lorsque le modèle d'hôte **OS-Windows-SNMP** est utilisé.
 
 </TabItem>
-<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
+<TabItem value="Non rattachés à un modèle d'hôte" label="Non rattachés à un modèle d'hôte">
 
 | Alias                | Modèle de service                           | Description                                                                                                                                                 | Découverte |
 |:---------------------|:--------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------|
@@ -457,7 +457,7 @@ telle que celle-ci (remplacez les valeurs d'exemple par les vôtres) :
 La commande devrait retourner un message de sortie similaire à :
 
 ```bash
-OK:   | 'cpu.utilization.percentage'=77%;;;0;100 'core.cpu.utilization.percentage'=88%;;;0;100 
+OK:   | 'cpu.utilization.percentage'=10%;;;0;100 'core.cpu.utilization.percentage'=89%;;;0;100 
 ```
 
 ### Diagnostic des erreurs communes

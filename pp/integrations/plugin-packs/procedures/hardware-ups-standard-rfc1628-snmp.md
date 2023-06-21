@@ -301,7 +301,7 @@ is able to monitor a server using a command like this one (replace the sample va
 The expected command output is shown below:
 
 ```bash
-OK:  | 'alarms.current.count'=94;;;0; 
+OK:  | 'alarms.current.count'=12;;;0; 
 ```
 
 ### Troubleshooting
