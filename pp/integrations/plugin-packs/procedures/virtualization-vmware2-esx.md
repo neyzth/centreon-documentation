@@ -5,120 +5,315 @@ title: VMware ESX
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+## Pack assets
 
-## Overview
+### Templates
 
-VMWare is a software company based in the USA. VMWare provides cloud computing and virtualization software and services.
+The Monitoring Connector **VMware ESX** brings a host template:
 
-The Centreon Plugins and Monitoring Connectors rely on the Centreon VMWare Connector to request the vCenter API.
+* **Virt-VMWare2-ESX-custom**
 
-## Monitoring Connector Assets
-
-### Monitored Objects
-
-* ESX or ESXi
-	
-### Discovery rules
+The connector brings the following service templates (sorted by the host template they are attached to):
 
 <Tabs groupId="sync">
-<TabItem value="Host" label="Host">
+<TabItem value="Virt-VMWare2-ESX-custom" label="Virt-VMWare2-ESX-custom">
 
-| Rule name                      | Description                                     |
-| :----------------------------- | :---------------------------------------------- |
-| Virt-VMWare2-Esx-HostDiscovery | Discover VMWare ESX linked to a vcenter or ESXi |
-	
+| Service Alias | Service Template                         | Service Description                                      |
+|:--------------|:-----------------------------------------|:---------------------------------------------------------|
+| Esx-Cpu       | Virt-VMWare2-ESX-Cpu-Generic-custom      | Check CPU usage of an ESX Server                         |
+| Esx-Health    | Virt-VMWare2-ESX-Health-Generic-custom   | Check hardware and CPU sensors of an ESX Server          |
+| Esx-Memory    | Virt-VMWare2-ESX-Memory-Generic-custom   | Check Memory usage of an ESX Server                      |
+| Esx-Status    | Virt-VMWare2-ESX-Status-Generic-custom   | Check global status of an ESX Server                     |
+| Esx-Swap      | Virt-VMWare2-ESX-Swap-Generic-custom     | Check if a virtual machine is swapping on the ESX server |
+| Esx-Vm-Count  | Virt-VMWare2-ESX-Vm-Count-Generic-custom | Check virtual machines running                           |
+
+> The services listed above are created automatically when the **Virt-VMWare2-ESX** host template is used.
+
 </TabItem>
-<TabItem value="Services" label="Services">
+<TabItem value="Not attached to a host template-custom" label="Not attached to a host template-custom">
 
-| Rule name                                | Description                                 |
-| :--------------------------------------- | :------------------------------------------ |
-| Virt-VMWare2-Esx-Datastores-Latency-Name | Discover the Datastores and monitor latency |
-| Virt-VMWare2-Esx-Nics-Traffic-Name       | Discover the traffic NIC and monitor        |
+| Service Alias          | Service Template                                   | Service Description                                                              | Discovery  |
+|:-----------------------|:---------------------------------------------------|:---------------------------------------------------------------------------------|:-----------|
+| Datastore-Io           | Virt-VMWare2-Datastore-Io-Generic-custom           | Check datastore usage in Kbps                                                    |            |
+| Datastore-Iops         | Virt-VMWare2-Datastore-Iops-Generic-custom         | Check average IOPs of a datastore                                                |            |
+| Datastore-Snapshots    | Virt-VMWare2-Datastore-Snapshots-Generic-custom    | Check snapshots usage on a datastore                                             |            |
+| Datastore-Usage        | Virt-VMWare2-Datastore-Usage-Generic-custom        | Check datastore usage                                                            |            |
+| Datastore-Vm-Count     | Virt-VMWare2-Datastore-Vm-Count-Generic-custom     | Check virtual machines running                                                   |            |
+| ESX-Alarms             | Virt-VMWare2-ESX-Alarms-Generic-custom             | Check alarms of an ESX host                                                      |            |
+| Esx-Datastores-Latency | Virt-VMWare2-ESX-Datastores-Latency-Generic-custom | Check Datastores latency of an ESX Server                                        | X          |
+| Esx-Service            | Virt-VMWare2-ESX-Service-Generic-custom            | Check services of an ESX Server                                                  |            |
+| Esx-Storage            | Virt-VMWare2-ESX-Storage-Generic-custom            | Check ESX storage informations                                                   |            |
+| Esx-Time               | Virt-VMWare2-ESX-Time-Generic-custom               | Check time of an ESX Server                                                      |            |
+| Esx-Traffic            | Virt-VMWare2-ESX-Traffic-Generic-custom            | Check traffic usages of a physical network interfaces. Thresholds are in percent | X          |
+| Esx-Uptime             | Virt-VMWare2-ESX-Uptime-Generic-custom             | Get uptime in days of an ESX Server                                              |            |
+| Esx-is-Maintenance     | Virt-VMWare2-ESX-Maintenance-Generic-custom        | Check maintenance mode of an ESX Server                                          |            |
+
+> The services listed above are not created automatically when a host template is applied. To use them, [create a service manually](/docs/monitoring/basic-objects/services), then appy the service template you want.
+
+> If **Discovery** is checked, it means a service discovery rule exists for this service template.
 
 </TabItem>
 </Tabs>
 
-### Monitored Metrics 
+### Discovery rules
+
+#### Host discovery
+
+| Rule name       | Description         |
+|:----------------|:--------------------|
+| VMWare ESX      | Discover VMWare ESX |
+
+More information about discovering hosts automatically is available on the [dedicated page](/docs/monitoring/discovery/hosts-discovery).
+
+#### Service discovery
+
+| Rule name                                | Description                                                   |
+|:-----------------------------------------|:--------------------------------------------------------------|
+| Virt-VMWare2-Esx-Datastores-Latency-Name |                                                               |
+| Virt-VMWare2-Esx-Nics-Traffic-Name       | Discover network interfaces and monitor bandwidth utilization |
+
+More information about discovering services automatically is available on the [dedicated page](/docs/monitoring/discovery/services-discovery)
+and in the [following chapter](/docs/monitoring/discovery/services-discovery/#discovery-rules).
+
+### Collected metrics & status
+
+Here is the list of services for this connector, detailing all metrics linked to each service.
 
 <Tabs groupId="sync">
+<TabItem value="Datastore-Io" label="Datastore-Io">
+
+| Metric name                                    | Unit  |
+|:-----------------------------------------------|:------|
+| datastore.read.usage.bytespersecond            | B/s   |
+| datastore.write.usage.bytespersecond           | B/s   |
+| datastore#status                               | N/A   |
+| datastore#datastore.read.usage.bytespersecond  | B/s   |
+| datastore#datastore.write.usage.bytespersecond | B/s   |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
+<TabItem value="Datastore-Iops" label="Datastore-Iops">
+
+| Metric name                                | Unit  |
+|:-------------------------------------------|:------|
+| datastores.read.usage.iops                 | iops  |
+| datastores.write.usage.iops                | iops  |
+| datastore~status                           | N/A   |
+| datastore~datastore.read.usage.iops        | iops  |
+| datastore~datastore.write.usage.iops       | iops  |
+| datastore~vm#datastore.vm.read.usage.iops  | iops  |
+| datastore~vm#datastore.vm.write.usage.iops | iops  |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
+<TabItem value="Datastore-Snapshots" label="Datastore-Snapshots">
+
+| Metric name                                    | Unit  |
+|:-----------------------------------------------|:------|
+| datastore~status                               | N/A   |
+| datastore~datastore.snapshots.usage.bytes      | B     |
+| datastore~files#datastore.snapshot.usage.bytes |       |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
+<TabItem value="Datastore-Usage" label="Datastore-Usage">
+
+| Metric name                                 | Unit  |
+|:--------------------------------------------|:------|
+| datastore#status                            | N/A   |
+| datastore#datastore.space.usage.bytes       | B     |
+| datastore#datastore.space.free.bytes        | B     |
+| datastore#datastore.space.usage.percentage  | %     |
+| datastore#datastore.space.provisioned.bytes | B     |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
+<TabItem value="Datastore-Vm-Count" label="Datastore-Vm-Count">
+
+| Metric name                                     | Unit  |
+|:------------------------------------------------|:------|
+| datastore.vm.poweredon.current.count            | count |
+| datastore.vm.poweredoff.current.count           | count |
+| datastore.vm.suspended.current.count            | count |
+| datastore#status                                | N/A   |
+| datastore#datastore.vm.poweredon.current.count  | count |
+| datastore#datastore.vm.poweredoff.current.count | count |
+| datastore#datastore.vm.suspended.current.count  | count |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
+<TabItem value="ESX-Alarms" label="ESX-Alarms">
+
+| Metric name                        | Unit  |
+|:-----------------------------------|:------|
+| host.alarms.warning.current.count  | count |
+| host.alarms.critical.current.count | count |
+| status                             | N/A   |
+| alarm-warning                      | N/A   |
+| alarm-critical                     | N/A   |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
 <TabItem value="Esx-Cpu" label="Esx-Cpu">
 
-| Metric name                                   | Description                      | Unit |
-| :-------------------------------------------- | :------------------------------- | :--- |
-| host.cpu.utilization.percentage               | Total CPU usage in percentage    | %    |
-| host.cpu.utilization.mhz                      | Total CPU usage in MHz           | MHz  |
-| core#host.core.cpu.utilization.percentage     | CPU usage per core in percentage | %    |
+| Metric name                                   | Unit  |
+|:----------------------------------------------|:------|
+| host~status                                   | N/A   |
+| host~host.cpu.utilization.percentage          | %     |
+| host~host.cpu.utilization.mhz                 | MHz   |
+| host~cpu#host.core.cpu.utilization.percentage | %     |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
+<TabItem value="Esx-Datastores-Latency" label="Esx-Datastores-Latency">
+
+| Metric name                                              | Unit  |
+|:---------------------------------------------------------|:------|
+| host~status                                              | N/A   |
+| host~datastore#host.datastore.latency.read.milliseconds  | ms    |
+| host~datastore#host.datastore.latency.write.milliseconds | ms    |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
 
 </TabItem>
 <TabItem value="Esx-Health" label="Esx-Health">
 
-| Metric name                         | Description                         | Unit  |
-| :---------------------------------- | :---------------------------------- | :---- |
-| host.health.problems.current.count  | Total number of problem on the ESXs | Count |
-| host.health.problems.current.count  | Number of health checks in green    | Count |
-| host.health.yellow.current.count    | Number of health checks in yellow   | Count |
-| host.health.red.current.count       | Number of health checks in red      | Count |
+| Metric name                                       | Unit  |
+|:--------------------------------------------------|:------|
+| host.health.problems.current.count                | count |
+| host~status                                       | N/A   |
+| host~ok                                           |       |
+| host~host.health.problems.current.count           | count |
+| host~host.health.yellow.current.count             | count |
+| host~host.health.red.current.count                | count |
+| host~global_summary#global-summary                |       |
+| host~sensors_temp#host.sensor.temperature.celsius | C     |
+| host~sensors_fan#host.sensor.fan.speed.rpm        | rpm   |
+| host~sensors_voltage#host.sensor.voltage.volt     | V     |
+| host~sensors_power#host.sensor.power.watt         | W     |
 
 </TabItem>
 <TabItem value="Esx-Memory" label="Esx-Memory">
 
-| Metric name                   | Description                                  | Unit  |
-| :---------------------------- | :------------------------------------------- | :---- |
-| host.memory.usage.bytes       | Memory used                                  | Bytes |
-| host.memory.overhead.bytes    | Memory overhead needed by the VMs on the ESX | Bytes |
-| host.memory.state.count       | Memory state                                 |       |
+| Metric name                     | Unit  |
+|:--------------------------------|:------|
+| host#status                     | N/A   |
+| host#host.memory.usage.bytes    | B     |
+| host#host.memory.overhead.bytes | B     |
+| host#host.memory.state.count    | count |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
+<TabItem value="Esx-Service" label="Esx-Service">
+
+| Metric name                 | Unit  |
+|:----------------------------|:------|
+| host~status                 | N/A   |
+| host~service#service-status | N/A   |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
 
 </TabItem>
 <TabItem value="Esx-Status" label="Esx-Status">
 
-| Metric name | Description               | Unit |
-| :---------- | :------------------------ | :--- |
-| Status      | Overall status on the ESX |      |
+| Metric name         | Unit  |
+|:--------------------|:------|
+| host#status         | N/A   |
+| host#overall-status | N/A   |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
 
 </TabItem>
 <TabItem value="Esx-Storage" label="Esx-Storage">
 
-| Metric name                            | Description                                       | Unit |
-| :------------------------------------- | :------------------------------------------------ | :--- |
-| status                                 | Status of the ESX                                 |      |
-| adapters status                        | Adapter statuses of the ESX                       |      |
-| *esx_name*#host.adapters.total.count   | Number of adapters on the ESX                     |      |
-| *esx_name*#host.adapters.online.count  | Number of adapters with status online on the ESX  |      |
-| *esx_name*#host.adapters.offline.count | Number of adapters with status offline on the ESX |      |
-| *esx_name*#host.adapters.fault.count   | Number of adapters with status fault on the ESX   |      |
-| *esx_name*#host.adapters.unknown.count | Number of adapters with status unknown on the ESX |      |
-| luns status                            | LUN statuses of the ESX                           |      |
-| *esx_name*#host.luns.total.count       | Number of LUNs on the ESX                         |      |
-| *esx_name*#host.luns.ok.count          | Number of LUNs with status ok on the ESX          |      |
-| *esx_name*#host.luns.error.count       | Number of LUNs with status error on the ESX       |      |
-| *esx_name*#host.luns.off.count         | Number of LUNs with status off on the ESX         |      |
-| *esx_name*#host.luns.unknown.count     | Number of LUNs with status unknown on the ESX     |      |
-| *esx_name*#host.luns.quiesced.count    | Number of LUNs with status quiesced on the ESX    |      |
-| *esx_name*#host.luns.degraded.count    | Number of LUNs with status degraded on the ESX    |      |
-| paths status                           | Paths statuses of the ESX                         |      |
-| *esx_name*#host.paths.total.count      | Number of paths on the ESX                        |      |
-| *esx_name*#host.paths.active.count     | Number of paths with status active on the ESX     |      |
-| *esx_name*#host.paths.disabled.count   | Number of paths with status disabed on the ESX    |      |
-| *esx_name*#host.paths.standby.count    | Number of paths with status standby on the ESX    |      |
-| *esx_name*#host.paths.dead.count       | Number of paths with status dead on the ESX       |      |
-| *esx_name*#host.paths.unknown.count    | Number of paths with status unknown on the ESX    |      |
+| Metric name                  | Unit  |
+|:-----------------------------|:------|
+| host~status                  | N/A   |
+| host~adapters#adapter-status | N/A   |
+| host~luns#lun-status         | N/A   |
+| host~paths#path-status       | N/A   |
 
 </TabItem>
 <TabItem value="Esx-Swap" label="Esx-Swap">
 
-| Metric name                           | Description         | Unit |
-| :------------------------------------ | :------------------ | :--- |
-| host.swap.in.usage.bytespersecond     | Swap in rate Usage  | B/s  |
-| host.swap.out.usage.bytespersecond    | Swap out rate Usage | B/s  |
+| Metric name                             | Unit  |
+|:----------------------------------------|:------|
+| host#status                             | N/A   |
+| host#host.swap.in.usage.bytespersecond  | B/s   |
+| host#host.swap.out.usage.bytespersecond | B/s   |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
+<TabItem value="Esx-Time" label="Esx-Time">
+
+| Metric name                   | Unit  |
+|:------------------------------|:------|
+| host#status                   | N/A   |
+| host#host.time.offset.seconds | s     |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
+<TabItem value="Esx-Traffic" label="Esx-Traffic">
+
+| Metric name                                          | Unit  |
+|:-----------------------------------------------------|:------|
+| host~status                                          | N/A   |
+| host~host.traffic.in.bitsperseconds                  | b/s   |
+| host~host.traffic.out.bitsperseconds                 | b/s   |
+| host~pnic#link-status                                | N/A   |
+| host~pnic#host.traffic.in.bitsperseconds             | b/s   |
+| host~pnic#host.traffic.out.bitsperseconds            | b/s   |
+| host~pnic#host.packets.in.dropped.percentage         | %     |
+| host~pnic#host.packets.out.dropped.percentage        | %     |
+| host~vswitch#host.vswitch.traffic.in.bitsperseconds  | b/s   |
+| host~vswitch#host.vswitch.traffic.out.bitsperseconds | b/s   |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
+<TabItem value="Esx-Uptime" label="Esx-Uptime">
+
+| Metric name                     | Unit  |
+|:--------------------------------|:------|
+| host#status                     | N/A   |
+| host#host.uptime.offset.seconds | s     |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
 
 </TabItem>
 <TabItem value="Esx-Vm-Count" label="Esx-Vm-Count">
 
-| Metric name                       | Description                          | Unit  |
-| :-------------------------------- | :----------------------------------- | :---- |
-| host.vm.poweredon.current.count   | Number of powered on VMs on the ESX  | Count |
-| host.vm.poweredoff.current.count  | Number of powered off VMs on the ESX | Count |
-| host.vm.suspended.current.count   | Number of suspended VMs on the ESX   | Count |
+| Metric name                           | Unit  |
+|:--------------------------------------|:------|
+| host.vm.poweredon.current.count       | count |
+| host.vm.poweredoff.current.count      | count |
+| host.vm.suspended.current.count       | count |
+| host#status                           | N/A   |
+| host#host.vm.poweredon.current.count  | count |
+| host#host.vm.poweredoff.current.count | count |
+| host#host.vm.suspended.current.count  | count |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
+
+</TabItem>
+<TabItem value="Esx-is-Maintenance" label="Esx-is-Maintenance">
+
+| Metric name             | Unit  |
+|:------------------------|:------|
+| host#status             | N/A   |
+| host#maintenance-status | N/A   |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
 
 </TabItem>
 </Tabs>
@@ -206,132 +401,960 @@ The Poller with the Centreon VMware Connector installed needs to access the vCen
 
 The Pollers that request the Centreon VMWare Connector host need to access the Centreon VMWare Connector host on TCP/5700.
 
-## Installation
+## Installing the monitoring connector
+
+### Pack
+
+1. If the platform uses an *online* license, you can skip the package installation
+instruction below as it is not required to have the connector displayed within the
+**Configuration > Monitoring Connectors Manager** menu.
+If the platform uses an *offline* license, install the package on the **central server**
+with the command corresponding to the operating system's package manager:
 
 <Tabs groupId="sync">
-<TabItem value="Online License" label="Online License">
+<TabItem value="Alma / RHEL / Oracle Linux 8" label="Alma / RHEL / Oracle Linux 8">
 
-1. Install the Vmware2 Connector Centreon Plugin on every Poller expected to monitor the devices: 
-	
 ```bash
-yum install centreon-plugin-Virtualization-Vmware2-Connector-Plugin
+dnf install centreon-pack-virtualization-vmware2-esx
 ```
 
-2. Install the 'Vmware ESX' Centreon Monitoring Connector on the **Configuration > Monitoring Connectors Manager** page 
-	
 </TabItem>
-<TabItem value="Offline License" label="Offline License">
-
-1. Install the Vmware ESX Centreon Plugin on every poller expected to monitor the devices:
+<TabItem value="Alma / RHEL / Oracle Linux 9" label="Alma / RHEL / Oracle Linux 9">
 
 ```bash
-yum install centreon-plugin-Virtualization-Vmware2-Connector-Plugin
+dnf install centreon-pack-virtualization-vmware2-esx
 ```
-	
-2. Install the Centreon Monitoring Connector RPM: 
+
+</TabItem>
+<TabItem value="Debian 11" label="Debian 11">
+
+```bash
+apt install centreon-pack-virtualization-vmware2-esx
+```
+
+</TabItem>
+<TabItem value="CentOS 7" label="CentOS 7">
 
 ```bash
 yum install centreon-pack-virtualization-vmware2-esx
 ```
-	
-3. Install the 'Vmware ESX' Centreon Monitoring Connector on the **Configuration > Monitoring Connectors Manager** page 
 
 </TabItem>
 </Tabs>
 
-## Configuration
+2. Whatever the license type (*online* or *offline*), install the **VMware ESX** connector through
+the **Configuration > Monitoring Connectors Manager** menu.
 
-* Log into Centreon and add a new Host through "Configuration > Hosts".
-* Apply the relevant Host Template "Virt-VMWare2-ESX-custom", and configure the mandatory Macros:
+### Plugin
 
-| Mandatory   | Name                       | Description                                             |
-| :---------- | :------------------------- | :------------------------------------------------------ |
-| X           | CENTREONVMWARECONTAINER    | Name of your container in the file centreon_vmware.pm   | 
-| X           | CENTREONVMWAREHOST         | The Centreon server that launches the connection        |
-| X           | CENTREONVMWAREPORT         | By default: 5700                                        |
-| X           | ESXNAME                    | Name of the ESX (defined in your VMWare infrastructure) |
-|             | CENTREONVMWAREEXTRAOPTIONS | Customize it with your own if needed                    |
+Since Centreon 22.04, you can benefit from the 'Automatic plugin installation' feature.
+When this feature is enabled, you can skip the installation part below.
 
-## FAQ
+You still have to manually install the plugin on the poller(s) when:
+- Automatic plugin installation is turned off
+- You want to run a discovery job from a poller that doesn't monitor any resource of this kind yet
 
-### How do I run my plugin through the CLI and what do the main parameters stand for ?
-	
-Once you've installed the plugin, you can test it logging with centreon-engine user:
-	
+> More information in the [Installing the plugin](/docs/monitoring/pluginpacks/#installing-the-plugin) section.
+
+Use the commands below according to your operating system's package manager:
+
+<Tabs groupId="sync">
+<TabItem value="Alma / RHEL / Oracle Linux 8" label="Alma / RHEL / Oracle Linux 8">
+
+```bash
+dnf install centreon-plugin-Virtualization-Vmware2-Connector-Plugin
+```
+
+</TabItem>
+<TabItem value="Alma / RHEL / Oracle Linux 9" label="Alma / RHEL / Oracle Linux 9">
+
+```bash
+dnf install centreon-plugin-Virtualization-Vmware2-Connector-Plugin
+```
+
+</TabItem>
+<TabItem value="Debian 11" label="Debian 11">
+
+```bash
+apt install centreon-plugin-virtualization-vmware2-connector-plugin
+```
+
+</TabItem>
+<TabItem value="CentOS 7" label="CentOS 7">
+
+```bash
+yum install centreon-plugin-Virtualization-Vmware2-Connector-Plugin
+```
+
+</TabItem>
+</Tabs>
+
+## Using the monitoring connector
+
+### Using a host template provided by the connector
+
+1. Log into Centreon and add a new host through **Configuration > Hosts**.
+2. Fill the **Name**, **Alias** & **IP Address/DNS** fields according to your ressource settings.
+3. Apply the **Virt-VMWare2-ESX-custom** template to the host. A list of macros appears. Macros allow you to define how the connector will connect to the resource, and to customize the connector's behavior.
+4. Fill in the macros you want. Some macros are mandatory.
+
+| Macro                      | Description                                                                                           | Default value     | Mandatory   |
+|:---------------------------|:------------------------------------------------------------------------------------------------------|:------------------|:------------|
+| CENTREONVMWARECONTAINER    | Container to use                                                                                      | default           |             |
+| CENTREONVMWAREHOST         | Connector hostname                                                                                    | localhost         |             |
+| CENTREONVMWAREPORT         | Connector port                                                                                        | 5700              |             |
+| ESXNAME                    | ESX hostname to check. If not set, we check all ESX                                                   |                   |             |
+| CENTREONVMWAREEXTRAOPTIONS | Any extra option you may want to add to every command (E.g. a --verbose flag). All options are listed [here](#available-options) |                   |             |
+
+5. [Deploy the configuration](/docs/monitoring/monitoring-servers/deploying-a-configuration). The host appears in the list of hosts, and on the **Resources Status** page. The command that is sent by the connector is displayed in the details panel of the host: it shows the values of the macros.
+
+### Using a service template provided by the connector
+
+1. If you have used a host template and checked **Create Services linked to the Template too**, the services linked to the template have been created automatically, using the corresponding service templates. Otherwise, [create manually the services you want](/docs/monitoring/basic-objects/services) and apply a service template to them.
+2. Fill in the macros you want (e.g. to change the thresholds for the alerts). Some macros are mandatory (see the table below).
+
+<Tabs groupId="sync">
+<TabItem value="Datastore-Io" label="Datastore-Io">
+
+| Macro              | Description                                                                                                                     | Default value                | Mandatory   |
+|:-------------------|:--------------------------------------------------------------------------------------------------------------------------------|:-----------------------------|:------------|
+| UNKNOWNSTATUS      | Set unknown threshold for status (Default: '%{accessible} !~ /^true\|1$/i'). You can use the following variables: %{accessible} | %{accessible} !~ /^true|1$/i |             |
+| DATASTORENAME      | datastore name to list                                                                                                          |                              |             |
+| WARNINGREAD        | Threshold warning                                                                                                               |                              |             |
+| CRITICALREAD       | Threshold critical                                                                                                              |                              |             |
+| WARNINGSTATUS      | Set warning threshold for status (Default: ''). You can use the following variables: %{accessible}                              |                              |             |
+| CRITICALSTATUS     | Set critical threshold for status (Default: ''). You can use the following variables: %{accessible}                             |                              |             |
+| WARNINGTOTALREAD   | Threshold warning                                                                                                               |                              |             |
+| CRITICALTOTALREAD  | Threshold critical                                                                                                              |                              |             |
+| WARNINGTOTALWRITE  | Threshold warning                                                                                                               |                              |             |
+| CRITICALTOTALWRITE | Threshold critical                                                                                                              |                              |             |
+| WARNINGWRITE       | Threshold warning                                                                                                               |                              |             |
+| CRITICALWRITE      | Threshold critical                                                                                                              |                              |             |
+| EXTRAOPTIONS       | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                             |                              |             |
+
+</TabItem>
+<TabItem value="Datastore-Iops" label="Datastore-Iops">
+
+| Macro              | Description                                                                                                                     | Default value                | Mandatory   |
+|:-------------------|:--------------------------------------------------------------------------------------------------------------------------------|:-----------------------------|:------------|
+| UNKNOWNSTATUS      | Set unknown threshold for status (Default: '%{accessible} !~ /^true\|1$/i'). You can use the following variables: %{accessible} | %{accessible} !~ /^true|1$/i |             |
+| DATASTORENAME      | datastore name to list                                                                                                          |                              |             |
+| WARNINGREAD        | Thresholds                                                                                                                      |                              |             |
+| CRITICALREAD       | Thresholds                                                                                                                      |                              |             |
+| WARNINGREADTOTAL   | Thresholds                                                                                                                      |                              |             |
+| CRITICALREADTOTAL  | Thresholds                                                                                                                      |                              |             |
+| WARNINGREADVM      | Thresholds                                                                                                                      |                              |             |
+| CRITICALREADVM     | Thresholds                                                                                                                      |                              |             |
+| WARNINGSTATUS      | Set warning threshold for status (Default: ''). You can use the following variables: %{accessible}                              |                              |             |
+| CRITICALSTATUS     | Set critical threshold for status (Default: ''). You can use the following variables: %{accessible}                             |                              |             |
+| WARNINGWRITE       | Thresholds                                                                                                                      |                              |             |
+| CRITICALWRITE      | Thresholds                                                                                                                      |                              |             |
+| WARNINGWRITETOTAL  | Thresholds                                                                                                                      |                              |             |
+| CRITICALWRITETOTAL | Thresholds                                                                                                                      |                              |             |
+| WARNINGWRITEVM     | Thresholds                                                                                                                      |                              |             |
+| CRITICALWRITEVM    | Thresholds                                                                                                                      |                              |             |
+| EXTRAOPTIONS       | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                             |                              |             |
+
+</TabItem>
+<TabItem value="Datastore-Snapshots" label="Datastore-Snapshots">
+
+| Macro            | Description                                                                                                                     | Default value                | Mandatory   |
+|:-----------------|:--------------------------------------------------------------------------------------------------------------------------------|:-----------------------------|:------------|
+| UNKNOWNSTATUS    | Set unknown threshold for status (Default: '%{accessible} !~ /^true\|1$/i'). You can use the following variables: %{accessible} | %{accessible} !~ /^true|1$/i |             |
+| DATASTORENAME    | datastore name to list                                                                                                          |                              |             |
+| WARNINGSNAPSHOT  | Threshold warning                                                                                                               |                              |             |
+| CRITICALSNAPSHOT | Threshold critical                                                                                                              |                              |             |
+| WARNINGSTATUS    | Set warning threshold for status (Default: ''). You can use the following variables: %{accessible}                              |                              |             |
+| CRITICALSTATUS   | Set critical threshold for status (Default: ''). You can use the following variables: %{accessible}                             |                              |             |
+| WARNINGTOTAL     | Threshold warning                                                                                                               |                              |             |
+| CRITICALTOTAL    | Threshold critical                                                                                                              |                              |             |
+| EXTRAOPTIONS     | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                             |                              |             |
+
+</TabItem>
+<TabItem value="Datastore-Usage" label="Datastore-Usage">
+
+| Macro               | Description                                                                                                                     | Default value                | Mandatory   |
+|:--------------------|:--------------------------------------------------------------------------------------------------------------------------------|:-----------------------------|:------------|
+| UNKNOWNSTATUS       | Set unknown threshold for status (Default: '%{accessible} !~ /^true\|1$/i'). You can use the following variables: %{accessible} | %{accessible} !~ /^true|1$/i |             |
+| UNIT                |                                                                                                                                 | %                            |             |
+| DATASTORENAME       | datastore name to list                                                                                                          |                              |             |
+| WARNINGPROVISIONED  | Thresholds. : 'usage' (B), 'usage-free' (B), 'usage-prct' (%), 'provisioned'                                                    |                              |             |
+| CRITICALPROVISIONED | Thresholds. : 'usage' (B), 'usage-free' (B), 'usage-prct' (%), 'provisioned'                                                    |                              |             |
+| WARNINGSTATUS       | Set warning threshold for status (Default: ''). You can use the following variables: %{accessible}                              |                              |             |
+| CRITICALSTATUS      | Set critical threshold for status (Default: ''). You can use the following variables: %{accessible}                             |                              |             |
+| WARNINGUSAGE        | Thresholds. : 'usage' (B), 'usage-free' (B), 'usage-prct' (%), 'provisioned'                                                    | 80                           |             |
+| CRITICALUSAGE       | Thresholds. : 'usage' (B), 'usage-free' (B), 'usage-prct' (%), 'provisioned'                                                    | 90                           |             |
+| EXTRAOPTIONS        | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                             |                              |             |
+
+</TabItem>
+<TabItem value="Datastore-Vm-Count" label="Datastore-Vm-Count">
+
+| Macro                  | Description                                                                                                                     | Default value                | Mandatory   |
+|:-----------------------|:--------------------------------------------------------------------------------------------------------------------------------|:-----------------------------|:------------|
+| UNKNOWNSTATUS          | Set unknown threshold for status (Default: '%{accessible} !~ /^true\|1$/i'). You can use the following variables: %{accessible} | %{accessible} !~ /^true|1$/i |             |
+| DATASTORENAME          | datastore name to check                                                                                                         |                              |             |
+| WARNINGOFF             | Threshold warning                                                                                                               |                              |             |
+| CRITICALOFF            | Threshold critical                                                                                                              |                              |             |
+| WARNINGON              | Threshold warning                                                                                                               |                              |             |
+| CRITICALON             | Threshold critical                                                                                                              |                              |             |
+| WARNINGSTATUS          | Set warning threshold for status (Default: ''). You can use the following variables: %{accessible}                              |                              |             |
+| CRITICALSTATUS         | Set critical threshold for status (Default: ''). You can use the following variables: %{accessible}                             |                              |             |
+| WARNINGSUSPENDED       | Threshold warning                                                                                                               |                              |             |
+| CRITICALSUSPENDED      | Threshold critical                                                                                                              |                              |             |
+| WARNINGTOTALOFF        | Threshold warning                                                                                                               |                              |             |
+| CRITICALTOTALOFF       | Threshold critical                                                                                                              |                              |             |
+| WARNINGTOTALON         | Threshold warning                                                                                                               |                              |             |
+| CRITICALTOTALON        | Threshold critical                                                                                                              |                              |             |
+| WARNINGTOTALSUSPENDED  | Threshold warning                                                                                                               |                              |             |
+| CRITICALTOTALSUSPENDED | Threshold critical                                                                                                              |                              |             |
+| EXTRAOPTIONS           | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                             |                              |             |
+
+</TabItem>
+<TabItem value="ESX-Alarms" label="ESX-Alarms">
+
+| Macro                      | Description                                                                                                                                      | Default value               | Mandatory   |
+|:---------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------|:------------|
+| FILTERTIME                 | Don't check alarm older (value in seconds)                                                                                                       | 3600                        |             |
+| WARNINGSTATUS              | Set warning threshold for status (Default: '%{status} =~ /yellow/i). You can use the following variables: %{status}, %{name}, %{entity}, %{type} | %{status} =~ /yellow/i      |             |
+| CRITICALSTATUS             | Set critical threshold for status (Default: '%{status} =~ /red/i'). You can use the following variables: %{status}, %{name}, %{entity}, %{type}  | %{status} =~ /red/i         |             |
+| WARNINGTOTALALARMWARNING   | Threshold warning                                                                                                                                |                             |             |
+| CRITICALTOTALALARMWARNING  | Threshold critical                                                                                                                               |                             |             |
+| WARNINGTOTALALARMCRITICAL  | Threshold warning                                                                                                                                |                             |             |
+| CRITICALTOTALALARMCRITICAL | Threshold critical                                                                                                                               |                             |             |
+| EXTRAOPTIONS               | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                                              | --verbose --ignore-warn-msg |             |
+
+</TabItem>
+<TabItem value="Esx-Cpu" label="Esx-Cpu">
+
+| Macro               | Description                                                                                                               | Default value               | Mandatory   |
+|:--------------------|:--------------------------------------------------------------------------------------------------------------------------|:----------------------------|:------------|
+| UNKNOWNSTATUS       | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status} | %{status} !~ /^connected$/i |             |
+| WARNING             | Threshold warning                                                                                                         |                             |             |
+| CRITICAL            | Threshold critical                                                                                                        |                             |             |
+| WARNINGCPU          | Threshold warning                                                                                                         |                             |             |
+| CRITICALCPU         | Threshold critical                                                                                                        |                             |             |
+| WARNINGSTATUS       | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                            |                             |             |
+| CRITICALSTATUS      | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                           |                             |             |
+| WARNINGTOTALCPUMHZ  | Threshold warning                                                                                                         |                             |             |
+| CRITICALTOTALCPUMHZ | Threshold critical                                                                                                        |                             |             |
+| EXTRAOPTIONS        | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                       |                             |             |
+
+</TabItem>
+<TabItem value="Esx-Datastores-Latency" label="Esx-Datastores-Latency">
+
+| Macro                | Description                                                                                                               | Default value               | Mandatory   |
+|:---------------------|:--------------------------------------------------------------------------------------------------------------------------|:----------------------------|:------------|
+| FILTERDATASTORENAME  | Datastore to check. If not set, we check all datastores                                                                   | .*                          |             |
+| UNKNOWNSTATUS        | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status} | %{status} !~ /^connected$/i |             |
+| WARNINGREADLATENCY   | Threshold warning                                                                                                         |                             |             |
+| CRITICALREADLATENCY  | Threshold critical                                                                                                        |                             |             |
+| WARNINGSTATUS        | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                            |                             |             |
+| CRITICALSTATUS       | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                           |                             |             |
+| WARNINGWRITELATENCY  | Threshold warning                                                                                                         |                             |             |
+| CRITICALWRITELATENCY | Threshold critical                                                                                                        |                             |             |
+| EXTRAOPTIONS         | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                       | --verbose                   |             |
+
+</TabItem>
+<TabItem value="Esx-Health" label="Esx-Health">
+
+| Macro                  | Description                                                                                                               | Default value     | Mandatory   |
+|:-----------------------|:--------------------------------------------------------------------------------------------------------------------------|:------------------|:------------|
+| UNKNOWNSTATUS          | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status} |                   |             |
+| WARNINGPROBLEMS        | Thresholds                                                                                                                |                   |             |
+| CRITICALPROBLEMS       | Thresholds                                                                                                                |                   |             |
+| WARNINGPROBLEMSRED     | Thresholds                                                                                                                |                   |             |
+| CRITICALPROBLEMSRED    | Thresholds                                                                                                                |                   |             |
+| WARNINGPROBLEMSYELLOW  | Thresholds                                                                                                                |                   |             |
+| CRITICALPROBLEMSYELLOW | Thresholds                                                                                                                |                   |             |
+| WARNINGSTATUS          | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                            |                   |             |
+| CRITICALSTATUS         | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                           |                   |             |
+| WARNINGTOTALPROBLEMS   | Thresholds                                                                                                                |                   |             |
+| CRITICALTOTALPROBLEMS  | Thresholds                                                                                                                |                   |             |
+| EXTRAOPTIONS           | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                       | --verbose         |             |
+
+</TabItem>
+<TabItem value="Esx-Memory" label="Esx-Memory">
+
+| Macro                  | Description                                                                                                               | Default value               | Mandatory   |
+|:-----------------------|:--------------------------------------------------------------------------------------------------------------------------|:----------------------------|:------------|
+| UNKNOWNSTATUS          | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status} | %{status} !~ /^connected$/i |             |
+| WARNING                | Threshold warning (can use unit option)                                                                                   |                             |             |
+| CRITICAL               | Threshold critical (can use unit option)                                                                                  |                             |             |
+| WARNINGOVERHEADMEMORY  | Threshold overhead                                                                                                        |                             |             |
+| CRITICALOVERHEADMEMORY | Threshold critical                                                                                                        |                             |             |
+| WARNINGSTATEMEMORY     | Threshold warning. For state != 'high': --warning-state=0                                                                 |                             |             |
+| CRITICALSTATEMEMORY    | Threshold critical. For state != 'high': --warning-state=0                                                                |                             |             |
+| WARNINGSTATUS          | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                            |                             |             |
+| CRITICALSTATUS         | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                           |                             |             |
+| EXTRAOPTIONS           | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                       |                             |             |
+
+</TabItem>
+<TabItem value="Esx-Service" label="Esx-Service">
+
+| Macro                 | Description                                                                                                                                                        | Default value                                             | Mandatory   |
+|:----------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------|:------------|
+| UNKNOWNSTATUS         | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i && %{maintenance} =~ /false/i'). You can use the following variables: %{status}            | %{status} !~ /^connected$/i && %{maintenance} =~ /false/i |             |
+| FILTERSERVICES        | Filter services you want to check (can be a regexp)                                                                                                                | ^(?!(snmpd|xorg)$)                                        |             |
+| CRITICALSERVICESTATUS | Set critical threshold for status (Default: '%{policy} =~ /^on\|automatic/i && !%{running}'). You can use the following variables: %{running}, %{label}, %{policy} | %{policy} =~ /^on|automatic/i && !%{running}              |             |
+| WARNINGSERVICESTATUS  | Set warning threshold for status (Default: ''). You can use the following variables: %{running}, %{label}, %{policy}                                               |                                                           |             |
+| WARNINGSTATUS         | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                                                                     |                                                           |             |
+| CRITICALSTATUS        | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                                                                    |                                                           |             |
+| EXTRAOPTIONS          | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                                                                | --verbose                                                 |             |
+
+</TabItem>
+<TabItem value="Esx-Status" label="Esx-Status">
+
+| Macro                 | Description                                                                                                                            | Default value                  | Mandatory   |
+|:----------------------|:---------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------|:------------|
+| UNKNOWNSTATUS         | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}              | %{status} !~ /^connected$/i    |             |
+| UNKNOWNOVERALLSTATUS  | Set warning threshold for status (Default: '%{overall\_status} =~ /gray/i'). You can use the following variables: %{overall\_status}   | %{overall_status} =~ /gray/i   |             |
+| WARNINGOVERALLSTATUS  | Set warning threshold for status (Default: '%{overall\_status} =~ /yellow/i'). You can use the following variables: %{overall\_status} | %{overall_status} =~ /yellow/i |             |
+| CRITICALOVERALLSTATUS | Set critical threshold for status (Default: '%{overall\_status} =~ /red/i'). You can use the following variables: %{overall\_status}   | %{overall_status} =~ /red/i    |             |
+| WARNINGSTATUS         | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                                         |                                |             |
+| CRITICALSTATUS        | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                                        |                                |             |
+| EXTRAOPTIONS          | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                                    | --verbose                      |             |
+
+</TabItem>
+<TabItem value="Esx-Storage" label="Esx-Storage">
+
+| Macro                   | Description                                                                                                                                                             | Default value                                             | Mandatory   |
+|:------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------|:------------|
+| UNKNOWNSTATUS           | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i && %{maintenance} =~ /false/i'). You can use the following variables: %{status}, %{maintenance} | %{status} !~ /^connected$/i && %{maintenance} =~ /false/i |             |
+| FILTERADAPTERNAME       | Filter adapters by name (can be a regexp)                                                                                                                               |                                                           |             |
+| FILTERLUNNAME           | Filter luns by name (can be a regexp)                                                                                                                                   |                                                           |             |
+| FILTERPATHNAME          | Filter paths by name (can be a regexp)                                                                                                                                  |                                                           |             |
+| WARNINGADAPTERSFAULT    | Thresholds                                                                                                                                                              |                                                           |             |
+| CRITICALADAPTERSFAULT   | Thresholds                                                                                                                                                              |                                                           |             |
+| WARNINGADAPTERSOFFLINE  | Thresholds                                                                                                                                                              |                                                           |             |
+| CRITICALADAPTERSOFFLINE | Thresholds                                                                                                                                                              |                                                           |             |
+| WARNINGADAPTERSONLINE   | Thresholds                                                                                                                                                              |                                                           |             |
+| CRITICALADAPTERSONLINE  | Thresholds                                                                                                                                                              |                                                           |             |
+| CRITICALADAPTERSTATUS   | Set critical threshold for adapter status (Default: '%{status} =~ /fault/'). You can use the following variables: %{name}, %{host}, %{status}                           | %{status} =~ /fault/                                      |             |
+| WARNINGADAPTERSTATUS    | Set warning threshold for adapter status. You can use the following variables: %{name}, %{host}, %{status}                                                              |                                                           |             |
+| WARNINGADAPTERSTOTAL    | Thresholds                                                                                                                                                              |                                                           |             |
+| CRITICALADAPTERSTOTAL   | Thresholds                                                                                                                                                              |                                                           |             |
+| WARNINGADAPTERSUNKNOWN  | Thresholds                                                                                                                                                              |                                                           |             |
+| CRITICALADAPTERSUNKNOWN | Thresholds                                                                                                                                                              |                                                           |             |
+| WARNINGLUNSDEGRADED     |                                                                                                                                                                         |                                                           |             |
+| CRITICALLUNSDEGRADED    |                                                                                                                                                                         |                                                           |             |
+| WARNINGLUNSERROR        |                                                                                                                                                                         |                                                           |             |
+| CRITICALLUNSERROR       |                                                                                                                                                                         |                                                           |             |
+| WARNINGLUNSOFF          |                                                                                                                                                                         |                                                           |             |
+| CRITICALLUNSOFF         |                                                                                                                                                                         |                                                           |             |
+| WARNINGLUNSOK           |                                                                                                                                                                         |                                                           |             |
+| CRITICALLUNSOK          |                                                                                                                                                                         |                                                           |             |
+| WARNINGLUNSQUIESCED     |                                                                                                                                                                         |                                                           |             |
+| CRITICALLUNSQUIESCED    |                                                                                                                                                                         |                                                           |             |
+| WARNINGLUNSTATUS        | Set warning threshold for lun status (Default: '%{status} =~ /degraded\|quiesced/'). You can use the following variables: %{name}, %{host}, %{status}                   | %{status} =~ /degraded|quiesced/                          |             |
+| CRITICALLUNSTATUS       | Set critical threshold for lun status (Default: '%{status} =~ /lostcommunication\|error/'). You can use the following variables: %{name}, %{host}, %{status}            | %{status} =~ /lostcommunication|error/                    |             |
+| WARNINGLUNSTOTAL        |                                                                                                                                                                         |                                                           |             |
+| CRITICALLUNSTOTAL       |                                                                                                                                                                         |                                                           |             |
+| WARNINGLUNSUNKNOWN      |                                                                                                                                                                         |                                                           |             |
+| CRITICALLUNSUNKNOWN     |                                                                                                                                                                         |                                                           |             |
+| WARNINGPATHSACTIVE      |                                                                                                                                                                         |                                                           |             |
+| CRITICALPATHSACTIVE     |                                                                                                                                                                         |                                                           |             |
+| WARNINGPATHSDEAD        |                                                                                                                                                                         |                                                           |             |
+| CRITICALPATHSDEAD       |                                                                                                                                                                         |                                                           |             |
+| WARNINGPATHSDISABLED    |                                                                                                                                                                         |                                                           |             |
+| CRITICALPATHSDISABLED   |                                                                                                                                                                         |                                                           |             |
+| WARNINGPATHSSTANDBY     |                                                                                                                                                                         |                                                           |             |
+| CRITICALPATHSSTANDBY    |                                                                                                                                                                         |                                                           |             |
+| CRITICALPATHSTATUS      | Set critical threshold for path status (Default: '%{status} =~ /dead/'). You can use the following variables: %{name}, %{host}, %{status}                               | %{status} =~ /dead/                                       |             |
+| WARNINGPATHSTATUS       | Set warning threshold for path status. You can use the following variables: %{name}, %{host}, %{status}                                                                 |                                                           |             |
+| WARNINGPATHSTOTAL       |                                                                                                                                                                         |                                                           |             |
+| CRITICALPATHSTOTAL      |                                                                                                                                                                         |                                                           |             |
+| WARNINGPATHSUNKNOWN     |                                                                                                                                                                         |                                                           |             |
+| CRITICALPATHSUNKNOWN    |                                                                                                                                                                         |                                                           |             |
+| WARNINGSTATUS           | Set warning threshold for status. You can use the following variables: %{status}, %{maintenance}                                                                        |                                                           |             |
+| CRITICALSTATUS          | Set critical threshold for status. You can use the following variables: %{status}, %{maintenance}                                                                       |                                                           |             |
+| EXTRAOPTIONS            | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                                                                     | --verbose                                                 |             |
+
+</TabItem>
+<TabItem value="Esx-Swap" label="Esx-Swap">
+
+| Macro           | Description                                                                                                               | Default value               | Mandatory   |
+|:----------------|:--------------------------------------------------------------------------------------------------------------------------|:----------------------------|:------------|
+| UNKNOWNSTATUS   | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status} | %{status} !~ /^connected$/i |             |
+| WARNINGSTATUS   | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                            |                             |             |
+| CRITICALSTATUS  | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                           |                             |             |
+| WARNINGSWAPIN   | Threshold warning                                                                                                         |                             |             |
+| CRITICALSWAPIN  | Threshold critical                                                                                                        |                             |             |
+| WARNINGSWAPOUT  | Threshold warning                                                                                                         |                             |             |
+| CRITICALSWAPOUT | Threshold critical                                                                                                        |                             |             |
+| EXTRAOPTIONS    | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                       |                             |             |
+
+</TabItem>
+<TabItem value="Esx-Time" label="Esx-Time">
+
+| Macro          | Description                                                                                                               | Default value               | Mandatory   |
+|:---------------|:--------------------------------------------------------------------------------------------------------------------------|:----------------------------|:------------|
+| UNKNOWNSTATUS  | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status} | %{status} !~ /^connected$/i |             |
+| WARNINGSTATUS  | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                            |                             |             |
+| CRITICALSTATUS | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                           |                             |             |
+| WARNINGTIME    | Threshold warning in seconds                                                                                              | -2:2                        |             |
+| CRITICALTIME   | Threshold critical in seconds                                                                                             | -5:5                        |             |
+| EXTRAOPTIONS   | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                       |                             |             |
+
+</TabItem>
+<TabItem value="Esx-Traffic" label="Esx-Traffic">
+
+| Macro                  | Description                                                                                                                              | Default value               | Mandatory   |
+|:-----------------------|:-----------------------------------------------------------------------------------------------------------------------------------------|:----------------------------|:------------|
+| FILTERNICNAME          | ESX nic to check. If not set, we check all nics                                                                                          | .*                          |             |
+| UNKNOWNSTATUS          | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}                | %{status} !~ /^connected$/i |             |
+| UNKNOWNLINKSTATUS      | Set warning threshold for status. You can use the following variables: %{link\_status}, %{display}                                       |                             |             |
+| WARNINGDROPPEDIN       | Thresholds                                                                                                                               |                             |             |
+| CRITICALDROPPEDIN      | Thresholds                                                                                                                               |                             |             |
+| WARNINGDROPPEDOUT      | Thresholds                                                                                                                               |                             |             |
+| CRITICALDROPPEDOUT     | Thresholds                                                                                                                               |                             |             |
+| WARNINGHOSTTRAFFICIN   | Thresholds                                                                                                                               |                             |             |
+| CRITICALHOSTTRAFFICIN  | Thresholds                                                                                                                               |                             |             |
+| WARNINGHOSTTRAFFICOUT  | Thresholds                                                                                                                               |                             |             |
+| CRITICALHOSTTRAFFICOUT | Thresholds                                                                                                                               |                             |             |
+| WARNINGIN              | Thresholds                                                                                                                               | 80                          |             |
+| CRITICALIN             | Thresholds                                                                                                                               | 90                          |             |
+| CRITICALLINKSTATUS     | Set critical threshold for status (Default: '%{link\_status} !~ /up/'). You can use the following variables: %{link\_status}, %{display} | %{link_status} !~ /up/      |             |
+| WARNINGLINKSTATUS      | Set warning threshold for status. You can use the following variables: %{link\_status}, %{display}                                       |                             |             |
+| WARNINGOUT             | Thresholds                                                                                                                               | 80                          |             |
+| CRITICALOUT            | Thresholds                                                                                                                               | 90                          |             |
+| WARNINGSTATUS          | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                                           |                             |             |
+| CRITICALSTATUS         | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                                          |                             |             |
+| EXTRAOPTIONS           | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                                      | --verbose                   |             |
+
+</TabItem>
+<TabItem value="Esx-Uptime" label="Esx-Uptime">
+
+| Macro          | Description                                                                                                               | Default value               | Mandatory   |
+|:---------------|:--------------------------------------------------------------------------------------------------------------------------|:----------------------------|:------------|
+| UNKNOWNSTATUS  | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status} | %{status} !~ /^connected$/i |             |
+| WARNINGSTATUS  | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                            |                             |             |
+| CRITICALSTATUS | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                           |                             |             |
+| WARNINGTIME    | Threshold warning in seconds                                                                                              |                             |             |
+| CRITICALTIME   | Threshold critical in seconds                                                                                             |                             |             |
+| EXTRAOPTIONS   | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                       |                             |             |
+
+</TabItem>
+<TabItem value="Esx-Vm-Count" label="Esx-Vm-Count">
+
+| Macro                  | Description                                                                                                               | Default value               | Mandatory   |
+|:-----------------------|:--------------------------------------------------------------------------------------------------------------------------|:----------------------------|:------------|
+| UNKNOWNSTATUS          | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status} | %{status} !~ /^connected$/i |             |
+| WARNINGOFF             | Threshold warning                                                                                                         |                             |             |
+| CRITICALOFF            | Threshold critical                                                                                                        |                             |             |
+| WARNINGON              | Threshold warning                                                                                                         |                             |             |
+| CRITICALON             | Threshold critical                                                                                                        |                             |             |
+| WARNINGSTATUS          | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                            |                             |             |
+| CRITICALSTATUS         | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                           |                             |             |
+| WARNINGSUSPENDED       | Threshold warning                                                                                                         |                             |             |
+| CRITICALSUSPENDED      | Threshold critical                                                                                                        |                             |             |
+| WARNINGTOTALOFF        | Threshold warning                                                                                                         |                             |             |
+| CRITICALTOTALOFF       | Threshold critical                                                                                                        |                             |             |
+| WARNINGTOTALON         | Threshold warning                                                                                                         |                             |             |
+| CRITICALTOTALON        | Threshold critical                                                                                                        |                             |             |
+| WARNINGTOTALSUSPENDED  | Threshold warning                                                                                                         |                             |             |
+| CRITICALTOTALSUSPENDED | Threshold critical                                                                                                        |                             |             |
+| EXTRAOPTIONS           | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                       |                             |             |
+
+</TabItem>
+<TabItem value="Esx-is-Maintenance" label="Esx-is-Maintenance">
+
+| Macro                     | Description                                                                                                                   | Default value               | Mandatory   |
+|:--------------------------|:------------------------------------------------------------------------------------------------------------------------------|:----------------------------|:------------|
+| UNKNOWNSTATUS             | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}     | %{status} !~ /^connected$/i |             |
+| CRITICALMAINTENANCESTATUS | Set critical threshold for status (Default: '%{maintenance} !~ /false/'). You can use the following variables: %{maintenance} | %{maintenance} !~ /false/   |             |
+| WARNINGMAINTENANCESTATUS  | Set warning threshold for status (Default: ''). You can use the following variables: %{maintenance}                           |                             |             |
+| WARNINGSTATUS             | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                                |                             |             |
+| CRITICALSTATUS            | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                               |                             |             |
+| EXTRAOPTIONS              | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                           |                             |             |
+
+</TabItem>
+</Tabs>
+
+3. [Deploy the configuration](/docs/monitoring/monitoring-servers/deploying-a-configuration). The service appears in the list of service, and on page **Resources Status**. The command that is sent by the connector is displayed in the details panel of the service: it shows the values of the macros.
+
+## How to check in the CLI that the configuration is OK and what are the main options for?
+
+Once the plugin is installed, log into your Centreon poller's CLI using the
+**centreon-engine** user account (`su - centreon-engine`). Test that the connector 
+is able to monitor a server using a command like this one (replace the sample values by yours):
+
 ```bash
 /usr/lib/centreon/plugins//centreon_vmware_connector_client.pl \
 	--plugin=apps::vmware::connector::plugin \
-	--mode=cpu-host \
+	--mode=datastore-io \
 	--custommode=connector \
 	--connector-hostname='localhost' \
 	--connector-port='5700' \
-	--container='vcenter01' \
-	--esx-hostname='SRV-ESX-TLS' \
-	--unknown-status='%{status} !~ /^connected$/i' \
+	--container='default'  \
+	--datastore-name='' \
+	--unknown-status='%{accessible} !~ /^true|1$/i' \
 	--warning-status='' \
 	--critical-status='' \
-	--warning-total-cpu='80' \
-	--critical-total-cpu='90' \
-	--warning-total-cpu-mhz='' \
-	--critical-total-cpu-mhz='' \
-	--warning-cpu='' \
-	--critical-cpu=''
+	--warning-total-read='' \
+	--critical-total-read='' \
+	--warning-total-write='' \
+	--critical-total-write='' \
+	--warning-read='' \
+	--critical-read='' \
+	--warning-write='' \
+	--critical-write='' \
+	
 ```
 
-Expected command output is shown below:
+The expected command output is shown below:
 
 ```bash
-OK: Host 'SRV-ESX-TLS' : status connected - cpu total average : 48.63 %, 14592.00 MHz - All CPUs are ok |
-'cpu_total'=48.63%;;;0;100 'cpu_total_MHz'=14592.00MHz;;;0;30000 'cpu_0'=13.95%;;;0;100 'cpu_1'=12.01%;;;0;100
-'cpu_2'=24.58%;;;0;100 'cpu_3'=24.55%;;;0;100 'cpu_4'=26.72%;;;0;100 'cpu_5'=24.38%;;;0;100 'cpu_6'=24.23%;;;0;100
-'cpu_7'=26.37%;;;0;100 'cpu_8'=27.71%;;;0;100 'cpu_9'=26.16%;;;0;100
+OK:      | 'datastore.read.usage.bytespersecond'=53B/s;;;0; 'datastore.write.usage.bytespersecond'=29B/s;;;0; 'datastore.read.usage.bytespersecond'=41B/s;;;0; 'datastore.write.usage.bytespersecond'=38B/s;;;0; 
 ```
 
-This command above checks the CPU Usage (```--plugin=apps::vmware::connector::plugin --mode=cpu-host```) of the ESX **SRV-ESX-TLS** (```--esx-hostname='SRV-ESX-TLS'```).
-It connects to the VMWare daemon on **localhost** (```--connector-hostname='localhost'```) on the port **5700** (```--connector-port='5700'```).
-Then the command requests the container **vcenter01** (```--container='vcenter01'```) because the ESX **SRV-ESX-TLS** is managed by **vcenter01**.
+### Troubleshooting
 
-It will trigger a WARNING alarm if the CPU Usage is above 80% (```--warning-total-cpu='80'```)
-and a CRITICAL alarm if the CPU Usage is above 90% (```--critical-total-cpu='90'```).
+Please find the [troubleshooting documentation](../getting-started/how-to-guides/troubleshooting-plugins.md)
+for Centreon Plugins typical issues.
 
-All available modes with the plugin can be displayed with: 
+### Available modes
+
+All available modes can be displayed by adding the `--list-mode` parameter to
+the command:
 
 ```bash
-/usr/lib/centreon/plugins/./centreon_vmware_connector_client.pl \
-    --plugin=apps::vmware::connector::plugin \
+/usr/lib/centreon/plugins//centreon_vmware_connector_client.pl \
+	--plugin=apps::vmware::connector::plugin \
     --list-mode
 ```
 
-The available options for a mode can be displayed using the ```--help``` parameter: 
+The plugin brings the following modes:
+
+| Mode                | Linked service template                            |
+|:--------------------|:---------------------------------------------------|
+| alarm-datacenter    | Not used in this Monitoring Connector              |
+| alarm-host          | Virt-VMWare2-ESX-Alarms-Generic-custom             |
+| countvm-host        | Virt-VMWare2-ESX-Vm-Count-Generic-custom           |
+| cpu-cluster         | Not used in this Monitoring Connector              |
+| cpu-host            | Virt-VMWare2-ESX-Cpu-Generic-custom                |
+| cpu-vm              | Not used in this Monitoring Connector              |
+| datastore-countvm   | Virt-VMWare2-Datastore-Vm-Count-Generic-custom     |
+| datastore-host      | Virt-VMWare2-ESX-Datastores-Latency-Generic-custom |
+| datastore-io        | Virt-VMWare2-Datastore-Io-Generic-custom           |
+| datastore-iops      | Virt-VMWare2-Datastore-Iops-Generic-custom         |
+| datastore-snapshot  | Virt-VMWare2-Datastore-Snapshots-Generic-custom    |
+| datastore-usage     | Virt-VMWare2-Datastore-Usage-Generic-custom        |
+| datastore-vm        | Not used in this Monitoring Connector              |
+| device-vm           | Not used in this Monitoring Connector              |
+| discovery           | Used for host discovery                            |
+| getmap              | Not used in this Monitoring Connector              |
+| health-host         | Virt-VMWare2-ESX-Health-Generic-custom             |
+| licenses            | Not used in this Monitoring Connector              |
+| limit-vm            | Not used in this Monitoring Connector              |
+| list-clusters       | Not used in this Monitoring Connector              |
+| list-datacenters    | Not used in this Monitoring Connector              |
+| list-datastores     | Used for service discovery                         |
+| list-nichost        | Used for service discovery                         |
+| maintenance-host    | Virt-VMWare2-ESX-Maintenance-Generic-custom        |
+| memory-host         | Virt-VMWare2-ESX-Memory-Generic-custom             |
+| memory-vm           | Not used in this Monitoring Connector              |
+| net-host            | Virt-VMWare2-ESX-Traffic-Generic-custom            |
+| net-vm              | Not used in this Monitoring Connector              |
+| service-host        | Virt-VMWare2-ESX-Service-Generic-custom            |
+| snapshot-vm         | Not used in this Monitoring Connector              |
+| stat-connectors     | Not used in this Monitoring Connector              |
+| status-cluster      | Not used in this Monitoring Connector              |
+| status-host         | Virt-VMWare2-ESX-Status-Generic-custom             |
+| status-vm           | Not used in this Monitoring Connector              |
+| storage-host        | Virt-VMWare2-ESX-Storage-Generic-custom            |
+| swap-host           | Virt-VMWare2-ESX-Swap-Generic-custom               |
+| swap-vm             | Not used in this Monitoring Connector              |
+| thinprovisioning-vm | Not used in this Monitoring Connector              |
+| time-host           | Virt-VMWare2-ESX-Time-Generic-custom               |
+| tools-vm            | Not used in this Monitoring Connector              |
+| uptime-host         | Virt-VMWare2-ESX-Uptime-Generic-custom             |
+| vmoperation-cluster | Not used in this Monitoring Connector              |
+| vsan-cluster-usage  | Not used in this Monitoring Connector              |
+
+### Available options
+
+#### Generic options
+
+All generic options are listed here:
+
+| Option                                     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Type      |
+|:-------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------|
+| --mode                                     | Define the mode in which you want the plugin to be executed (see--list-mode).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Global    |
+| --dyn-mode                                 | Specify a mode with the module's path (advanced).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Global    |
+| --list-mode                                | List all available modes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Global    |
+| --mode-version                             | Check minimal version of mode. If not, unknown error.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Global    |
+| --version                                  | Return the version of the plugin.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Global    |
+| --custommode                               | When a plugin offers several ways (CLI, library, etc.) to get the an information the desired one must be defined with this option.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Global    |
+| --list-custommode                          | List all available custom modes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Global    |
+| --multiple                                 | Multiple custom mode objects. This may be required by some specific modes (advanced).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Global    |
+| --pass-manager                             | Define the password manager you want to use. Supported managers are: environment, file, keepass, hashicorpvault and teampass.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Global    |
+| --verbose                                  | Display extended status information (long output).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Output    |
+| --debug                                    | Display debug messages.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Output    |
+| --filter-perfdata                          | Filter perfdata that match the regexp. Eg: adding --filter-perfdata='avg' will remove all metrics that do not contain 'avg' from performance data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Output    |
+| --filter-perfdata-adv                      | Filter perfdata based on a "if" condition using the following variables: label, value, unit, warning, critical, min, max. Variables must be written either %{variable} or %(variable). Eg: adding --filter-perfdata-adv='not (%(value) == 0 and %(max) eq "")' will remove all metrics whose value equals 0 and that don't have a maximum value.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Output    |
+| --explode-perfdata-max                     | Create a new metric for each metric that comes with a maximum limit. The new metric will be named identically with a '\_max' suffix). Eg: it will split 'used\_prct'=26.93%;0:80;0:90;0;100 into 'used\_prct'=26.93%;0:80;0:90;0;100 'used\_prct\_max'=100%;;;;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Output    |
+| --change-perfdata --extend-perfdata        | Change or extend perfdata. Syntax: --extend-perfdata=searchlabel,newlabel,target\[,\[newuom\],\[min\],\[m ax\]\]  Common examples:      Convert storage free perfdata into used:     --change-perfdata=free,used,invert()      Convert storage free perfdata into used:     --change-perfdata=used,free,invert()      Scale traffic values automatically:     --change-perfdata=traffic,,scale(auto)      Scale traffic values in Mbps:     --change-perfdata=traffic\_in,,scale(Mbps),mbps      Change traffic values in percent:     --change-perfdata=traffic\_in,,percent()                                                                                                                                                                                                                                                                                                                                                                          | Output    |
+| --extend-perfdata-group                    | Add new aggregated metrics (min, max, average or sum) for groups of metrics defined by a regex match on the metrics' names. Syntax: --extend-perfdata-group=regex,namesofnewmetrics,calculation\[,\[ne wuom\],\[min\],\[max\]\] regex: regular expression namesofnewmetrics: how the new metrics' names are composed (can use $1, $2... for groups defined by () in regex). calculation: how the values of the new metrics should be calculated newuom (optional): unit of measure for the new metrics min (optional): lowest value the metrics can reach max (optional): highest value the metrics can reach  Common examples:      Sum wrong packets from all interfaces (with interface need     --units-errors=absolute):     --extend-perfdata-group=',packets\_wrong,sum(packets\_(discard     \|error)\_(in\|out))'      Sum traffic by interface:     --extend-perfdata-group='traffic\_in\_(.*),traffic\_$1,sum(traf     fic\_(in\|out)\_$1)'   | Output    |
+| --change-short-output --change-long-output | Modify the short/long output that is returned by the plugin. Syntax: --change-short-output=pattern~replacement~modifier Most commonly used modifiers are i (case insensitive) and g (replace all occurrences). Eg: adding --change-short-output='OK~Up~gi' will replace all occurrences of 'OK', 'ok', 'Ok' or 'oK' with 'Up'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Output    |
+| --change-exit                              | Replace an exit code with one of your choice. Eg: adding --change-exit=unknown=critical will result in a CRITICAL state instead of an UNKNOWN state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Output    |
+| --range-perfdata                           | Change perfdata range thresholds display: 1 = start value equals to '0' is removed, 2 = threshold range is not display.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Output    |
+| --filter-uom                               | Masks the units when they don't match the given regular expression.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Output    |
+| --opt-exit                                 | Replace the exit code in case of an execution error (i.e. wrong option provided, SSH connection refused, timeout, etc). Default: unknown.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Output    |
+| --output-ignore-perfdata                   | Remove all the metrics from the service. The service will still have a status and an output.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Output    |
+| --output-ignore-label                      | Remove the status label ("OK:", "WARNING:", "UNKNOWN:", CRITICAL:") from the beginning of the output. Eg: 'OK: Ram Total:...' will become 'Ram Total:...'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Output    |
+| --output-xml                               | Return the output in XML format (to send to an XML API).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Output    |
+| --output-json                              | Return the output in JSON format (to send to a JSON API).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Output    |
+| --output-openmetrics                       | Return the output in OpenMetrics format (to send to a tool expecting this format).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Output    |
+| --output-file                              | Write output in file (can be combined with json, xml and openmetrics options). E.g.: --output-file=/tmp/output.txt will write the output in /tmp/output.txt.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Output    |
+| --disco-format                             | Applies only to modes beginning with 'list-'. Returns the list of available macros to configure a service discovery rule (formatted in XML).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Output    |
+| --disco-show                               | Applies only to modes beginning with 'list-'. Returns the list of discovered objects (formatted in XML) for service discovery.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Output    |
+| --float-precision                          | Define the float precision for thresholds (default: 8).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Output    |
+| --source-encoding                          | Define the character encoding of the response sent by the monitored resource Default: 'UTF-8'.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Output    |
+| --connector-hostname                       | Connector hostname (required).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Connector |
+| --connector-port                           | Connector port (default: 5700).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Connector |
+| --container                                | Container to use (it depends of the connector configuration).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Connector |
+| --vsphere-address                          | Address of vpshere/ESX to connect.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Connector |
+| --vsphere-username                         | Username of vpshere/ESX connection (with --vsphere-address).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Connector |
+| --vsphere-password                         | Password of vpshere/ESX connection (with --vsphere-address).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Connector |
+| --timeout                                  | Set global execution timeout (Default: 50)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Connector |
+| --sampling-period                          | Choose the sampling period (can change the default sampling for counters). Should be not different than 300 or 20.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Connector |
+| --time-shift                               | Can shift the time. We the following option you can average X counters values (default: 0).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Connector |
+| --case-insensitive                         | Searchs are case insensitive.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Connector |
+| --unknown-connector-status                 | Set unknown threshold for connector status (Default: '%{code} \< 0 \|\| (%{code} \> 0 && %{code} \< 200)'). You can use the following variables: %{code}, %{short\_message}, %{extra\_message}.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Connector |
+| --warning-connector-status                 | Set warning threshold for connector status (Default: ''). You can use the following variables: %{code}, %{short\_message}, %{extra\_message}.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Connector |
+| --critical-connector-status                | Set critical threshold for connector status (Default: ''). You can use the following variables: %{code}, %{short\_message}, %{extra\_message}.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Connector |
+
+#### Modes options
+
+All modes specific options are listed here:
+
+<Tabs groupId="sync">
+<TabItem value="Datastore-Io" label="Datastore-Io">
+
+| Option             | Description                                                                                                                       | Type |
+|:-------------------|:----------------------------------------------------------------------------------------------------------------------------------|:-----|
+| --datastore-name   | datastore name to list.                                                                                                           | Mode |
+| --filter           | Datastore name is a regexp.                                                                                                       | Mode |
+| --scope-datacenter | Search in following datacenter(s) (can be a regexp).                                                                              | Mode |
+| --unknown-status   | Set unknown threshold for status (Default: '%{accessible} !~ /^true\|1$/i'). You can use the following variables: %{accessible}   | Mode |
+| --warning-status   | Set warning threshold for status (Default: ''). You can use the following variables: %{accessible}                                | Mode |
+| --critical-status  | Set critical threshold for status (Default: ''). You can use the following variables: %{accessible}                               | Mode |
+| --warning-*        | Threshold warning. Can be: 'total-read', 'total-write', 'read', 'write'.                                                          | Mode |
+| --critical-*       | Threshold critical. Can be: 'total-read', 'total-write', 'read', 'write'.                                                         | Mode |
+
+</TabItem>
+<TabItem value="Datastore-Iops" label="Datastore-Iops">
+
+| Option                   | Description                                                                                                                       | Type |
+|:-------------------------|:----------------------------------------------------------------------------------------------------------------------------------|:-----|
+| --datastore-name         | datastore name to list.                                                                                                           | Mode |
+| --filter                 | Datastore name is a regexp.                                                                                                       | Mode |
+| --scope-datacenter       | Search in following datacenter(s) (can be a regexp).                                                                              | Mode |
+| --detail-iops-min        | Only display VMs with iops higher value (default: 50).                                                                            | Mode |
+| --unknown-status         | Set unknown threshold for status (Default: '%{accessible} !~ /^true\|1$/i'). You can use the following variables: %{accessible}   | Mode |
+| --warning-status         | Set warning threshold for status (Default: ''). You can use the following variables: %{accessible}                                | Mode |
+| --critical-status        | Set critical threshold for status (Default: ''). You can use the following variables: %{accessible}                               | Mode |
+| --warning-* --critical-* | Thresholds. Can be: 'read-total', 'write-total', 'read', 'write', 'read-vm', 'write-vm'.                                          | Mode |
+
+</TabItem>
+<TabItem value="Datastore-Snapshots" label="Datastore-Snapshots">
+
+| Option             | Description                                                                                                                       | Type |
+|:-------------------|:----------------------------------------------------------------------------------------------------------------------------------|:-----|
+| --datastore-name   | datastore name to list.                                                                                                           | Mode |
+| --filter           | Datastore name is a regexp.                                                                                                       | Mode |
+| --scope-datacenter | Search in following datacenter(s) (can be a regexp).                                                                              | Mode |
+| --unknown-status   | Set unknown threshold for status (Default: '%{accessible} !~ /^true\|1$/i'). You can use the following variables: %{accessible}   | Mode |
+| --warning-status   | Set warning threshold for status (Default: ''). You can use the following variables: %{accessible}                                | Mode |
+| --critical-status  | Set critical threshold for status (Default: ''). You can use the following variables: %{accessible}                               | Mode |
+| --warning-*        | Threshold warning. Can be: 'total', 'snapshot'.                                                                                   | Mode |
+| --critical-*       | Threshold critical. Can be: 'total', 'snapshot'.                                                                                  | Mode |
+
+</TabItem>
+<TabItem value="Datastore-Usage" label="Datastore-Usage">
+
+| Option                   | Description                                                                                                                       | Type |
+|:-------------------------|:----------------------------------------------------------------------------------------------------------------------------------|:-----|
+| --datastore-name         | datastore name to list.                                                                                                           | Mode |
+| --filter                 | Datastore name is a regexp.                                                                                                       | Mode |
+| --scope-datacenter       | Search in following datacenter(s) (can be a regexp).                                                                              | Mode |
+| --filter-host            | Filter datastores attached to hosts (can be a regexp).                                                                            | Mode |
+| --refresh                | Explicitly ask vmware to refreshes free-space and capacity values (slower).                                                       | Mode |
+| --unknown-status         | Set unknown threshold for status (Default: '%{accessible} !~ /^true\|1$/i'). You can use the following variables: %{accessible}   | Mode |
+| --warning-status         | Set warning threshold for status (Default: ''). You can use the following variables: %{accessible}                                | Mode |
+| --critical-status        | Set critical threshold for status (Default: ''). You can use the following variables: %{accessible}                               | Mode |
+| --warning-* --critical-* | Thresholds. Can be: Can be: 'usage' (B), 'usage-free' (B), 'usage-prct' (%), 'provisioned'.                                       | Mode |
+
+</TabItem>
+<TabItem value="Datastore-Vm-Count" label="Datastore-Vm-Count">
+
+| Option             | Description                                                                                                                       | Type |
+|:-------------------|:----------------------------------------------------------------------------------------------------------------------------------|:-----|
+| --datastore-name   | datastore name to check.                                                                                                          | Mode |
+| --filter           | Datastore name is a regexp.                                                                                                       | Mode |
+| --scope-datacenter | Search in following datacenter(s) (can be a regexp).                                                                              | Mode |
+| --unknown-status   | Set unknown threshold for status (Default: '%{accessible} !~ /^true\|1$/i'). You can use the following variables: %{accessible}   | Mode |
+| --warning-status   | Set warning threshold for status (Default: ''). You can use the following variables: %{accessible}                                | Mode |
+| --critical-status  | Set critical threshold for status (Default: ''). You can use the following variables: %{accessible}                               | Mode |
+| --warning-*        | Threshold warning. Can be: 'total-on', 'total-off', 'total-suspended', 'on', 'off', 'suspended'.                                  | Mode |
+| --critical-*       | Threshold critical. Can be: 'total-on', 'total-off', 'total-suspended', 'on', 'off', 'suspended'.                                 | Mode |
+
+</TabItem>
+<TabItem value="ESX-Alarms" label="ESX-Alarms">
+
+| Option                 | Description                                                                                                                                                                                                                                   | Type      |
+|:-----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------|
+| --memcached            | Memcached server to use (only one server).                                                                                                                                                                                                    | Retention |
+| --redis-server         | Redis server to use (only one server). Syntax: address\[:port\]                                                                                                                                                                               | Retention |
+| --redis-attribute      | Set Redis Options (--redis-attribute="cnx\_timeout=5").                                                                                                                                                                                       | Retention |
+| --redis-db             | Set Redis database index.                                                                                                                                                                                                                     | Retention |
+| --failback-file        | Failback on a local file if redis connection failed.                                                                                                                                                                                          | Retention |
+| --memexpiration        | Time to keep data in seconds (Default: 86400).                                                                                                                                                                                                | Retention |
+| --statefile-dir        | Define the cache directory (default: '/var/lib/centreon/centplugins').                                                                                                                                                                        | Retention |
+| --statefile-suffix     | Define a suffix to customize the statefile name (Default: '').                                                                                                                                                                                | Retention |
+| --statefile-concat-cwd | If used with the '--statefile-dir' option, the latter's value will be used as a sub-directory of the current working directory. Useful on Windows when the plugin is compiled, as the file system and permissions are different from Linux.   | Retention |
+| --statefile-format     | Define the format used to store the cache. Available formats: 'dumper', 'storable', 'json' (default).                                                                                                                                         | Retention |
+| --statefile-key        | Define the key to encrypt/decrypt the cache.                                                                                                                                                                                                  | Retention |
+| --statefile-cipher     | Define the cipher algorithm to encrypt the cache (Default: 'AES').                                                                                                                                                                            | Retention |
+| --esx-hostname         | ESX hostname to check. If not set, we check all ESX.                                                                                                                                                                                          | Mode      |
+| --filter               | Datacenter is a regexp.                                                                                                                                                                                                                       | Mode      |
+| --scope-datacenter     | Search in following datacenter(s) (can be a regexp).                                                                                                                                                                                          | Mode      |
+| --scope-cluster        | Search in following cluster(s) (can be a regexp).                                                                                                                                                                                             | Mode      |
+| --filter-time          | Don't check alarm older (value in seconds).                                                                                                                                                                                                   | Mode      |
+| --memory               | Check new alarms only.                                                                                                                                                                                                                        | Mode      |
+| --warning-status       | Set warning threshold for status (Default: '%{status} =~ /yellow/i). You can use the following variables: %{status}, %{name}, %{entity}, %{type}.                                                                                             | Mode      |
+| --critical-status      | Set critical threshold for status (Default: '%{status} =~ /red/i'). You can use the following variables: %{status}, %{name}, %{entity}, %{type}.                                                                                              | Mode      |
+| --warning-*            | Threshold warning. Can be: 'total-alarm-warning', 'total-alarm-critical'.                                                                                                                                                                     | Mode      |
+| --critical-*           | Threshold critical. Can be: 'total-alarm-warning', 'total-alarm-critical'.                                                                                                                                                                    | Mode      |
+
+</TabItem>
+<TabItem value="Esx-Cpu" label="Esx-Cpu">
+
+| Option             | Description                                                                                                                 | Type |
+|:-------------------|:----------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname     | ESX hostname to check. If not set, we check all ESX.                                                                        | Mode |
+| --filter           | ESX hostname is a regexp.                                                                                                   | Mode |
+| --scope-datacenter | Search in following datacenter(s) (can be a regexp).                                                                        | Mode |
+| --scope-cluster    | Search in following cluster(s) (can be a regexp).                                                                           | Mode |
+| --unknown-status   | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}   | Mode |
+| --warning-status   | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                              | Mode |
+| --critical-status  | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                             | Mode |
+| --warning-*        | Threshold warning. Can be: 'total-cpu', 'total-cpu-mhz', 'cpu'.                                                             | Mode |
+| --critical-*       | Threshold critical. Can be: 'total-cpu', 'total-cpu-mhz', 'cpu'.                                                            | Mode |
+
+</TabItem>
+<TabItem value="Esx-Datastores-Latency" label="Esx-Datastores-Latency">
+
+| Option             | Description                                                                                                                 | Type |
+|:-------------------|:----------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname     | ESX hostname to check. If not set, we check all ESX.                                                                        | Mode |
+| --filter           | ESX hostname is a regexp.                                                                                                   | Mode |
+| --scope-datacenter | Search in following datacenter(s) (can be a regexp).                                                                        | Mode |
+| --scope-cluster    | Search in following cluster(s) (can be a regexp).                                                                           | Mode |
+| --datastore-name   | Datastore to check. If not set, we check all datastores.                                                                    | Mode |
+| --filter-datastore | Datastore name is a regexp.                                                                                                 | Mode |
+| --unknown-status   | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}   | Mode |
+| --warning-status   | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                              | Mode |
+| --critical-status  | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                             | Mode |
+| --warning-*        | Threshold warning. Can be: 'read-latency', 'write-latency'.                                                                 | Mode |
+| --critical-*       | Threshold critical. Can be: 'read-latency', 'write-latency'.                                                                | Mode |
+
+</TabItem>
+<TabItem value="Esx-Health" label="Esx-Health">
+
+| Option                   | Description                                                                                                                                                   | Type |
+|:-------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname           | ESX hostname to check. If not set, we check all ESX.                                                                                                          | Mode |
+| --filter                 | ESX hostname is a regexp.                                                                                                                                     | Mode |
+| --scope-datacenter       | Search in following datacenter(s) (can be a regexp).                                                                                                          | Mode |
+| --scope-cluster          | Search in following cluster(s) (can be a regexp).                                                                                                             | Mode |
+| --storage-status         | Check storage(s) status.                                                                                                                                      | Mode |
+| --unknown-status         | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}                                     | Mode |
+| --warning-status         | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                                                                | Mode |
+| --critical-status        | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                                                               | Mode |
+| --warning-* --critical-* | Thresholds. Can be: 'total-problems', 'problems', 'problems-yellow', 'problems-red', 'sensor-temperature', 'sensor-fan', 'sensor-voltage', 'sensor-power'.    | Mode |
+
+</TabItem>
+<TabItem value="Esx-Memory" label="Esx-Memory">
+
+| Option                     | Description                                                                                                                 | Type |
+|:---------------------------|:----------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname             | ESX hostname to check. If not set, we check all ESX.                                                                        | Mode |
+| --filter                   | ESX hostname is a regexp.                                                                                                   | Mode |
+| --scope-datacenter         | Search in following datacenter(s) (can be a regexp).                                                                        | Mode |
+| --scope-cluster            | Search in following cluster(s) (can be a regexp).                                                                           | Mode |
+| --units                    | Units of thresholds (Default: '%') ('%', 'B').                                                                              | Mode |
+| --free                     | Thresholds are on free space left.                                                                                          | Mode |
+| --unknown-status           | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}   | Mode |
+| --warning-status           | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                              | Mode |
+| --critical-status          | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                             | Mode |
+| --warning-consumed-memory  | Threshold warning (can use unit option).                                                                                    | Mode |
+| --critical-consumed-memory | Threshold critical (can use unit option).                                                                                   | Mode |
+| --warning-overhead-memory  | Threshold overhead.                                                                                                         | Mode |
+| --critical-overhead-memory | Threshold critical.                                                                                                         | Mode |
+| --warning-state-memory     | Threshold warning. For state != 'high': --warning-state=0                                                                   | Mode |
+| --critical-state-memory    | Threshold critical. For state != 'high': --warning-state=0                                                                  | Mode |
+| --no-memory-state          | Don't check memory state.                                                                                                   | Mode |
+
+</TabItem>
+<TabItem value="Esx-Service" label="Esx-Service">
+
+| Option                    | Description                                                                                                                                                           | Type |
+|:--------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname            | ESX hostname to check. If not set, we check all ESX.                                                                                                                  | Mode |
+| --filter                  | ESX hostname is a regexp.                                                                                                                                             | Mode |
+| --scope-datacenter        | Search in following datacenter(s) (can be a regexp).                                                                                                                  | Mode |
+| --scope-cluster           | Search in following cluster(s) (can be a regexp).                                                                                                                     | Mode |
+| --filter-services         | Filter services you want to check (can be a regexp).                                                                                                                  | Mode |
+| --unknown-status          | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i && %{maintenance} =~ /false/i'). You can use the following variables: %{status}               | Mode |
+| --warning-status          | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                                                                        | Mode |
+| --critical-status         | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                                                                       | Mode |
+| --warning-service-status  | Set warning threshold for status (Default: ''). You can use the following variables: %{running}, %{label}, %{policy}                                                  | Mode |
+| --critical-service-status | Set critical threshold for status (Default: '%{policy} =~ /^on\|automatic/i && !%{running}'). You can use the following variables: %{running}, %{label}, %{policy}    | Mode |
+
+</TabItem>
+<TabItem value="Esx-Status" label="Esx-Status">
+
+| Option                    | Description                                                                                                                              | Type |
+|:--------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname            | ESX hostname to check. If not set, we check all ESX.                                                                                     | Mode |
+| --filter                  | ESX hostname is a regexp.                                                                                                                | Mode |
+| --scope-datacenter        | Search in following datacenter(s) (can be a regexp).                                                                                     | Mode |
+| --scope-cluster           | Search in following cluster(s) (can be a regexp).                                                                                        | Mode |
+| --unknown-status          | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}                | Mode |
+| --warning-status          | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                                           | Mode |
+| --critical-status         | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                                          | Mode |
+| --unknown-overall-status  | Set warning threshold for status (Default: '%{overall\_status} =~ /gray/i'). You can use the following variables: %{overall\_status}     | Mode |
+| --warning-overall-status  | Set warning threshold for status (Default: '%{overall\_status} =~ /yellow/i'). You can use the following variables: %{overall\_status}   | Mode |
+| --critical-overall-status | Set critical threshold for status (Default: '%{overall\_status} =~ /red/i'). You can use the following variables: %{overall\_status}     | Mode |
+
+</TabItem>
+<TabItem value="Esx-Storage" label="Esx-Storage">
+
+| Option                    | Description                                                                                                                                                               | Type |
+|:--------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname            | ESX hostname to check. If not set, we check all ESX.                                                                                                                      | Mode |
+| --filter                  | ESX hostname is a regexp.                                                                                                                                                 | Mode |
+| --scope-datacenter        | Search in following datacenter(s) (can be a regexp).                                                                                                                      | Mode |
+| --scope-cluster           | Search in following cluster(s) (can be a regexp).                                                                                                                         | Mode |
+| --filter-adapter-name     | Filter adapters by name (can be a regexp).                                                                                                                                | Mode |
+| --filter-lun-name         | Filter luns by name (can be a regexp).                                                                                                                                    | Mode |
+| --filter-path-name        | Filter paths by name (can be a regexp).                                                                                                                                   | Mode |
+| --unknown-status          | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i && %{maintenance} =~ /false/i'). You can use the following variables: %{status}, %{maintenance}   | Mode |
+| --warning-status          | Set warning threshold for status. You can use the following variables: %{status}, %{maintenance}                                                                          | Mode |
+| --critical-status         | Set critical threshold for status. You can use the following variables: %{status}, %{maintenance}                                                                         | Mode |
+| --warning-adapter-status  | Set warning threshold for adapter status. You can use the following variables: %{name}, %{host}, %{status}                                                                | Mode |
+| --critical-adapter-status | Set critical threshold for adapter status (Default: '%{status} =~ /fault/'). You can use the following variables: %{name}, %{host}, %{status}                             | Mode |
+| --warning-lun-status      | Set warning threshold for lun status (Default: '%{status} =~ /degraded\|quiesced/'). You can use the following variables: %{name}, %{host}, %{status}                     | Mode |
+| --critical-lun-status     | Set critical threshold for lun status (Default: '%{status} =~ /lostcommunication\|error/'). You can use the following variables: %{name}, %{host}, %{status}              | Mode |
+| --warning-path-status     | Set warning threshold for path status. You can use the following variables: %{name}, %{host}, %{status}                                                                   | Mode |
+| --critical-path-status    | Set critical threshold for path status (Default: '%{status} =~ /dead/'). You can use the following variables: %{name}, %{host}, %{status}                                 | Mode |
+| --warning-* --critical-*  | Thresholds. Can be: 'adapters-total', 'adapters-online', 'adapters-offline', 'adapters-fault', 'adapters-unknown',                                                        | Mode |
+
+</TabItem>
+<TabItem value="Esx-Swap" label="Esx-Swap">
+
+| Option             | Description                                                                                                                 | Type |
+|:-------------------|:----------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname     | ESX hostname to check. If not set, we check all ESX.                                                                        | Mode |
+| --filter           | ESX hostname is a regexp.                                                                                                   | Mode |
+| --scope-datacenter | Search in following datacenter(s) (can be a regexp).                                                                        | Mode |
+| --scope-cluster    | Search in following cluster(s) (can be a regexp).                                                                           | Mode |
+| --unknown-status   | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}   | Mode |
+| --warning-status   | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                              | Mode |
+| --critical-status  | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                             | Mode |
+| --warning-*        | Threshold warning. Can be: 'swap-in', 'swap-out'.                                                                           | Mode |
+| --critical-*       | Threshold critical. Can be: 'swap-in', 'swap-out'.                                                                          | Mode |
+
+</TabItem>
+<TabItem value="Esx-Time" label="Esx-Time">
+
+| Option             | Description                                                                                                                 | Type |
+|:-------------------|:----------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname     | ESX hostname to check. If not set, we check all ESX.                                                                        | Mode |
+| --filter           | ESX hostname is a regexp.                                                                                                   | Mode |
+| --scope-datacenter | Search in following datacenter(s) (can be a regexp).                                                                        | Mode |
+| --scope-cluster    | Search in following cluster(s) (can be a regexp).                                                                           | Mode |
+| --unknown-status   | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}   | Mode |
+| --warning-status   | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                              | Mode |
+| --critical-status  | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                             | Mode |
+| --warning-time     | Threshold warning in seconds.                                                                                               | Mode |
+| --critical-time    | Threshold critical in seconds.                                                                                              | Mode |
+
+</TabItem>
+<TabItem value="Esx-Traffic" label="Esx-Traffic">
+
+| Option                   | Description                                                                                                                                                                                                             | Type |
+|:-------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname           | ESX hostname to check. If not set, we check all ESX.                                                                                                                                                                    | Mode |
+| --filter                 | ESX hostname is a regexp.                                                                                                                                                                                               | Mode |
+| --scope-datacenter       | Search in following datacenter(s) (can be a regexp).                                                                                                                                                                    | Mode |
+| --scope-cluster          | Search in following cluster(s) (can be a regexp).                                                                                                                                                                       | Mode |
+| --nic-name               | ESX nic to check. If not set, we check all nics.                                                                                                                                                                        | Mode |
+| --filter-vswitch-name    | Filter vswitch by name. It monitors only ESX nic that belongs to the filtered vswitches.                                                                                                                                | Mode |
+| --unknown-status         | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}                                                                                               | Mode |
+| --warning-status         | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                                                                                                                          | Mode |
+| --critical-status        | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                                                                                                                         | Mode |
+| --unknown-link-status    | Set warning threshold for status. You can use the following variables: %{link\_status}, %{display}                                                                                                                      | Mode |
+| --warning-link-status    | Set warning threshold for status. You can use the following variables: %{link\_status}, %{display}                                                                                                                      | Mode |
+| --critical-link-status   | Set critical threshold for status (Default: '%{link\_status} !~ /up/'). You can use the following variables: %{link\_status}, %{display}                                                                                | Mode |
+| --warning-* --critical-* | Thresholds. Can be: 'host-traffic-in' (b/s), 'host-traffic-out' (b/s), 'vswitch-traffic-in' (b/s), 'vswitch-traffic-out' (b/s), 'link-traffic-in' (%), 'link-traffic-out' (%), 'link-dropped-in', 'link-dropped-out'.   | Mode |
+| --no-proxyswitch         | Use the following option if you are checking an ESX 3.x version (it's mandatory).                                                                                                                                       | Mode |
+
+</TabItem>
+<TabItem value="Esx-Uptime" label="Esx-Uptime">
+
+| Option             | Description                                                                                                                 | Type |
+|:-------------------|:----------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname     | ESX hostname to check. If not set, we check all ESX.                                                                        | Mode |
+| --filter           | ESX hostname is a regexp.                                                                                                   | Mode |
+| --scope-datacenter | Search in following datacenter(s) (can be a regexp).                                                                        | Mode |
+| --scope-cluster    | Search in following cluster(s) (can be a regexp).                                                                           | Mode |
+| --unknown-status   | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}   | Mode |
+| --warning-status   | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                              | Mode |
+| --critical-status  | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                             | Mode |
+| --warning-time     | Threshold warning in seconds.                                                                                               | Mode |
+| --critical-time    | Threshold critical in seconds.                                                                                              | Mode |
+
+</TabItem>
+<TabItem value="Esx-Vm-Count" label="Esx-Vm-Count">
+
+| Option             | Description                                                                                                                 | Type |
+|:-------------------|:----------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname     | ESX hostname to check. If not set, we check all ESX.                                                                        | Mode |
+| --filter           | ESX hostname is a regexp.                                                                                                   | Mode |
+| --scope-datacenter | Search in following datacenter(s) (can be a regexp).                                                                        | Mode |
+| --scope-cluster    | Search in following cluster(s) (can be a regexp).                                                                           | Mode |
+| --unknown-status   | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}   | Mode |
+| --warning-status   | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                              | Mode |
+| --critical-status  | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                             | Mode |
+| --warning-*        | Threshold warning. Can be: 'total-on', 'total-off', 'total-suspended', 'on', 'off', 'suspended'.                            | Mode |
+| --critical-*       | Threshold critical. Can be: 'total-on', 'total-off', 'total-suspended', 'on', 'off', 'suspended'.                           | Mode |
+
+</TabItem>
+<TabItem value="Esx-is-Maintenance" label="Esx-is-Maintenance">
+
+| Option                        | Description                                                                                                                      | Type |
+|:------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|:-----|
+| --esx-hostname                | ESX hostname to check. If not set, we check all ESX.                                                                             | Mode |
+| --filter                      | ESX hostname is a regexp.                                                                                                        | Mode |
+| --scope-datacenter            | Search in following datacenter(s) (can be a regexp).                                                                             | Mode |
+| --scope-cluster               | Search in following cluster(s) (can be a regexp).                                                                                | Mode |
+| --unknown-status              | Set unknown threshold for status (Default: '%{status} !~ /^connected$/i'). You can use the following variables: %{status}        | Mode |
+| --warning-status              | Set warning threshold for status (Default: ''). You can use the following variables: %{status}                                   | Mode |
+| --critical-status             | Set critical threshold for status (Default: ''). You can use the following variables: %{status}                                  | Mode |
+| --warning-maintenance-status  | Set warning threshold for status (Default: ''). You can use the following variables: %{maintenance}                              | Mode |
+| --critical-maintenance-status | Set critical threshold for status (Default: '%{maintenance} !~ /false/'). You can use the following variables: %{maintenance}    | Mode |
+
+</TabItem>
+</Tabs>
+
+All available options for a given mode can be displayed by adding the
+`--help` parameter to the command:
 
 ```bash
-/usr/lib/centreon/plugins/./centreon_vmware_connector_client.pl \
-    --plugin=apps::vmware::connector::plugin \
-    --mode=cpu-host \
+/usr/lib/centreon/plugins//centreon_vmware_connector_client.pl \
+	--plugin=apps::vmware::connector::plugin \
+	--mode=datastore-io \
     --help
 ```
-
-### Why do I get the following error:
-
-#### UNKNOWN: Unknown container name 'default' |
-
-This error message means that the container invoked in the command doesn't exist in your VMWare connector configuration.
-Check your macro **CENTREONVMWARECONTAINER** on your host or check the file */etc/centreon/centreon_vmware.pm*
-
-#### UNKNOWN: Container connection problem |
-
-This error message means that you have a issue with the credentials provided for your Container.
-Check your credentials in */etc/centreon/centreon_vmware.pm*.
-You can also take a look into the log for more information: */var/log/centreon/centreon_vmware.log*
-
-#### UNKNOWN: Cannot get value for counters (Maybe, object(s) cannot be reached: disconnected, not running, time not synced (see time-host mode),...) |
-
-This error message means that you the plugin cannot get value for some counters.
-Most of the time it caused by a time shift between the Centreon Servers and the VMWare Infrastructure.
-Check the synchronization with the mode ```time-host```.
-                                                                                                   
-#### UNKNOWN: Cannot get counter 'net.received.average' for the sampling period '300' (counter level: 2, sampling level: 1) 
-
-Some counters like 'mem.state.latest' and 'net.received.average' are only available with a sampling level at 2.
-You can configure the level sampling in the vCenter console for these counters.
-You can also configure the macro *SERVICEEXTRAOPTIONS* on the services where you catched this error with the option ```--sampling-period='20'```.

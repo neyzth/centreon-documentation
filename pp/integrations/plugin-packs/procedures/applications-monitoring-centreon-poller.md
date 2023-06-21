@@ -5,68 +5,87 @@ title: Centreon Poller
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-## Overview
-
-The Centreon Poller Monitoring Connector will help you set up monitoring for your pollers. To be the most accurate, the pollers should be monitored by the Central server. 
-
-## Pack Assets
+## Pack assets
 
 ### Templates
 
-The Centreon Monitoring Connector Centreon Poller brings a host template:
+The Monitoring Connector **Centreon Poller** brings a host template:
 
-* App-Monitoring-Centreon-Poller-custom
+* **App-Monitoring-Centreon-Poller-custom**
 
-It brings the following Service Templates:
+The connector brings the following service templates (sorted by the host template they are attached to):
 
-| Service Alias   | Service Template                            | Service Description                         | Default |
-| :-------------- | :------------------------------------------ | :------------------------------------------ | :------ |
-| Broker-Stats    | App-Monitoring-Centreon-Broker-Stats-Poller | Check Centreon Broker processes statistics. | X       |
-| proc-centengine | App-Monitoring-Centreon-Process-centengine  | Check centengine process.                   | X       |
-| proc-gorgoned   | App-Monitoring-Centreon-Process-gorgoned    | Check gorgoned process.                     | X       |
-| proc-ntpd       | App-Monitoring-Centreon-Process-ntpd        | Check NTP process.                          | X       |
-| proc-sshd       | App-Monitoring-Centreon-Process-sshd        | Check sshd process.                         | X       |
+<Tabs groupId="sync">
+<TabItem value="App-Monitoring-Centreon-Poller-custom" label="App-Monitoring-Centreon-Poller-custom">
+
+| Service Alias   | Service Template                                   | Service Description                        |
+|:----------------|:---------------------------------------------------|:-------------------------------------------|
+| Broker-Stats    | App-Monitoring-Centreon-Broker-Stats-Poller-custom | Check Centreon Broker processes statistics |
+| proc-centengine | App-Monitoring-Centreon-Process-centengine-custom  | Check centreon-engine process              |
+| proc-gorgoned   | App-Monitoring-Centreon-Process-gorgoned-custom    | Check centcore process                     |
+| proc-ntpd       | App-Monitoring-Centreon-Process-ntpd-custom        | Check NTP process                          |
+| proc-sshd       | App-Monitoring-Centreon-Process-sshd-custom        | Check sshd process                         |
+
+> The services listed above are created automatically when the **App-Monitoring-Centreon-Poller** host template is used.
+
+</TabItem>
+</Tabs>
 
 ### Collected metrics & status
+
+Here is the list of services for this connector, detailing all metrics linked to each service.
 
 <Tabs groupId="sync">
 <TabItem value="Broker-Stats" label="Broker-Stats">
 
-| Metric Name           | Unit   |
-| :-------------------- | :----- |
-| queued-events         | string |
-| speed-events          | string |
-| status                | string |
-| unacknowledged-events | string |
+| Metric name                    | Unit     |
+|:-------------------------------|:---------|
+| endpoint#status                | N/A      |
+| endpoint#speed-events          | events/s |
+| endpoint#queued-events         | events   |
+| endpoint#unacknowledged-events | events   |
+
+> To obtain this new metric format, include **--use-new-perfdata** in the **EXTRAOPTIONS** service macro.
 
 </TabItem>
-<TabItem value="proc-centegine" label="proc-centegine">
+<TabItem value="proc-centengine" label="proc-centengine">
 
-| Metric Name | Unit   |
-| :---------- | :----- |
-| Status      | string |
+| Metric name | Unit  |
+|:------------|:------|
+| nbproc      |       |
+| mem_total   | B     |
+| mem_avg     | B     |
+| cpu_total   | %     |
 
 </TabItem>
 <TabItem value="proc-gorgoned" label="proc-gorgoned">
 
-| Metric Name | Unit   |
-| :---------- | :----- |
-| Status      | string |
+| Metric name | Unit  |
+|:------------|:------|
+| nbproc      |       |
+| mem_total   | B     |
+| mem_avg     | B     |
+| cpu_total   | %     |
 
 </TabItem>
 <TabItem value="proc-ntpd" label="proc-ntpd">
 
-| Metric Name | Unit   |
-| :---------- | :----- |
-| Status      | string |
+| Metric name | Unit  |
+|:------------|:------|
+| nbproc      |       |
+| mem_total   | B     |
+| mem_avg     | B     |
+| cpu_total   | %     |
 
 </TabItem>
 <TabItem value="proc-sshd" label="proc-sshd">
 
-| Metric Name | Unit   |
-| :---------- | :----- |
-| Status      | string |
+| Metric name | Unit  |
+|:------------|:------|
+| nbproc      |       |
+| mem_total   | B     |
+| mem_avg     | B     |
+| cpu_total   | %     |
 
 </TabItem>
 </Tabs>
@@ -99,103 +118,602 @@ ssh-keygen -t ed25519 -a 100
 ssh-copy-id -i ~/.ssh/id_ed25519.pub centreon@<IP_POLLER>
 ```
 
-## Setup
+## Installing the monitoring connector
+
+### Pack
+
+1. If the platform uses an *online* license, you can skip the package installation
+instruction below as it is not required to have the connector displayed within the
+**Configuration > Monitoring Connectors Manager** menu.
+If the platform uses an *offline* license, install the package on the **central server**
+with the command corresponding to the operating system's package manager:
 
 <Tabs groupId="sync">
-<TabItem value="Online License" label="Online License">
-
-1. Install the Centreon package on the Central Server:
+<TabItem value="Alma / RHEL / Oracle Linux 8" label="Alma / RHEL / Oracle Linux 8">
 
 ```bash
-yum install centreon-plugin-Applications-Monitoring-Centreon-Poller centreon-plugin-Operatingsystems-Linux-Snmp
+dnf install centreon-pack-applications-monitoring-centreon-poller
 ```
-
-2. On the Centreon Web interface, install the **Centreon Poller** Centreon Monitoring Connector on the **Configuration > Monitoring Connectors Manager** page.
 
 </TabItem>
-<TabItem value="Offline License" label="Offline License">
-
-1. Install the Centreon package on the Central Server:
+<TabItem value="Alma / RHEL / Oracle Linux 9" label="Alma / RHEL / Oracle Linux 9">
 
 ```bash
-yum install centreon-plugin-Applications-Monitoring-Centreon-Poller centreon-plugin-Operatingsystems-Linux-Snmp
+dnf install centreon-pack-applications-monitoring-centreon-poller
 ```
 
-2. Install the **Centreon Poller** Centreon Monitoring Connector RPM on the Centreon Central server:
+</TabItem>
+<TabItem value="Debian 11" label="Debian 11">
 
- ```bash
+```bash
+apt install centreon-pack-applications-monitoring-centreon-poller
+```
+
+</TabItem>
+<TabItem value="CentOS 7" label="CentOS 7">
+
+```bash
 yum install centreon-pack-applications-monitoring-centreon-poller
- ```
-
-3. On the Centreon Web interface, install the **Centreon Poller** Centreon Monitoring Connector on the **Configuration > Monitoring Connectors Manager** page.
+```
 
 </TabItem>
 </Tabs>
 
-## Configuration
+2. Whatever the license type (*online* or *offline*), install the **Centreon Poller** connector through
+the **Configuration > Monitoring Connectors Manager** menu.
 
-### Host
+### Plugin
 
-* Log into Centreon and add a new Host through **Configuration > Hosts**.
-* Fill the **Name**, **Alias** & **IP Address/DNS** fields according to your *Centreon Poller* server settings.
-* Select the *App-Monitoring-Centreon-Poller-custom* template to apply to the Host.
-* Once the template is applied, fill in the corresponding macros. Some macros are mandatory.
+Since Centreon 22.04, you can benefit from the 'Automatic plugin installation' feature.
+When this feature is enabled, you can skip the installation part below.
 
-| Mandatory | Name            | Description                                                  |
-| :-------- | :-------------- | :----------------------------------------------------------- |
-|           | MODULESTATSFILE | (Default: '/var/lib/centreon-engine/*-module-stats.json')    |
-|           | EXTRAOPTIONS    | Any extra option you may want to add to every command\_line (eg. a --verbose flag) |
+You still have to manually install the plugin on the poller(s) when:
+- Automatic plugin installation is turned off
+- You want to run a discovery job from a poller that doesn't monitor any resource of this kind yet
 
-## How to check in the CLI that the configuration is OK and what are the main options for? 
+> More information in the [Installing the plugin](/docs/monitoring/pluginpacks/#installing-the-plugin) section.
 
-Once the plugin is installed, log into your Centreon Central Server CLI using the **centreon-engine** user account (`su - centreon-engine`) and test the Plugin by running the following 
-command:
+Use the commands below according to your operating system's package manager:
+
+<Tabs groupId="sync">
+<TabItem value="Alma / RHEL / Oracle Linux 8" label="Alma / RHEL / Oracle Linux 8">
 
 ```bash
-/usr/lib/centreon/plugins//centreon_centreon_central.pl \
-    --plugin=apps::centreon::local::plugin \
-    --hostname=10.0.0.1 \
-    --mode=broker-stats \
-    --broker-stats-file='/var/lib/centreon-engine/*-module-stats.json' \
-    --filter-name='' \
-    --warning-speed-events='' \
-    --critical-speed-events='' \
-    --warning-queued-events='' \
-    --critical-queued-events='' \
-    --warning-unacknowledged-events='' \
-    --critical-unacknowledged-events='' \
-    --warning-status='' \
-    --critical-status='%{type} eq "output" and %{queue_file_enabled} =~ /true/i' \
-    --verbose \
-    --remote \
-    --ssh-option='-l=centreon'
+dnf install centreon-plugin-Applications-Monitoring-Centreon-Poller
+```
+
+</TabItem>
+<TabItem value="Alma / RHEL / Oracle Linux 9" label="Alma / RHEL / Oracle Linux 9">
+
+```bash
+dnf install centreon-plugin-Applications-Monitoring-Centreon-Poller
+```
+
+</TabItem>
+<TabItem value="Debian 11" label="Debian 11">
+
+```bash
+apt install centreon-plugin-applications-monitoring-centreon-poller
+```
+
+</TabItem>
+<TabItem value="CentOS 7" label="CentOS 7">
+
+```bash
+yum install centreon-plugin-Applications-Monitoring-Centreon-Poller
+```
+
+</TabItem>
+</Tabs>
+
+## Using the monitoring connector
+
+### Using a host template provided by the connector
+
+1. Log into Centreon and add a new host through **Configuration > Hosts**.
+2. Fill the **Name**, **Alias** & **IP Address/DNS** fields according to your ressource settings.
+3. Apply the **App-Monitoring-Centreon-Poller-custom** template to the host. A list of macros appears. Macros allow you to define how the connector will connect to the resource, and to customize the connector's behavior.
+4. Fill in the macros you want. Some macros are mandatory.
+
+| Macro            | Description                                                                                           | Default value                                | Mandatory   |
+|:-----------------|:------------------------------------------------------------------------------------------------------|:---------------------------------------------|:------------|
+| MODULESTATSFILE  | Specify the centreon-broker json stats file . Can be multiple                                         | /var/lib/centreon-engine/*-module-stats.json |             |
+| SNMPEXTRAOPTIONS | Any extra option you may want to add to every command (E.g. a --verbose flag). All options are listed [here](#available-options) |                                              |             |
+
+5. [Deploy the configuration](/docs/monitoring/monitoring-servers/deploying-a-configuration). The host appears in the list of hosts, and on the **Resources Status** page. The command that is sent by the connector is displayed in the details panel of the host: it shows the values of the macros.
+
+### Using a service template provided by the connector
+
+1. If you have used a host template and checked **Create Services linked to the Template too**, the services linked to the template have been created automatically, using the corresponding service templates. Otherwise, [create manually the services you want](/docs/monitoring/basic-objects/services) and apply a service template to them.
+2. Fill in the macros you want (e.g. to change the thresholds for the alerts). Some macros are mandatory (see the table below).
+
+<Tabs groupId="sync">
+<TabItem value="Broker-Stats" label="Broker-Stats">
+
+| Macro                        | Description                                                                                                                                                                                                      | Default value                                                | Mandatory   |
+|:-----------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------|:------------|
+| FILTERNAME                   | Filter endpoint name                                                                                                                                                                                             |                                                              |             |
+| WARNINGQUEUEDEVENTS          | Thresholds                                                                                                                                                                                                       |                                                              |             |
+| CRITICALQUEUEDEVENTS         | Thresholds                                                                                                                                                                                                       |                                                              |             |
+| WARNINGSPEEDEVENTS           | Thresholds                                                                                                                                                                                                       |                                                              |             |
+| CRITICALSPEEDEVENTS          | Thresholds                                                                                                                                                                                                       |                                                              |             |
+| CRITICALSTATUS               | Set critical threshold for status (Default: '%{type} eq "output" and %{queue\_file\_enabled} =~ /yes/i'). You can use the following variables: %{queue\_file\_enabled}, %{state}, %{status}, %{type}, %{display} | %{type} eq "output" and %{queue_file_enabled} =~ /true|yes/i |             |
+| WARNINGSTATUS                | Set warning threshold for status. You can use the following variables: %{queue\_file\_enabled}, %{state}, %{status}, %{type}, %{display}                                                                         |                                                              |             |
+| WARNINGUNACKNOWLEDGEDEVENTS  | Thresholds                                                                                                                                                                                                       |                                                              |             |
+| CRITICALUNACKNOWLEDGEDEVENTS | Thresholds                                                                                                                                                                                                       |                                                              |             |
+| EXTRAOPTIONS                 | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options)                                                                                                              | --verbose --ssh-username='centreon'                          |             |
+
+</TabItem>
+<TabItem value="proc-centengine" label="proc-centengine">
+
+| Macro        | Description                                                                                         | Default value     | Mandatory   |
+|:-------------|:----------------------------------------------------------------------------------------------------|:------------------|:------------|
+| PROCESSNAME  | Filter process name                                                                                 | centengine        |             |
+| PROCESSPATH  | Filter process path                                                                                 | /usr/sbin/        |             |
+| PROCESSARGS  | Filter process arguments                                                                            |                   |             |
+| CRITICAL     | Threshold critical of matching processes count                                                      | 1:1               |             |
+| WARNING      | Threshold warning of matching processes count                                                       |                   |             |
+| EXTRAOPTIONS | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options) |                   |             |
+
+</TabItem>
+<TabItem value="proc-gorgoned" label="proc-gorgoned">
+
+| Macro        | Description                                                                                         | Default value     | Mandatory   |
+|:-------------|:----------------------------------------------------------------------------------------------------|:------------------|:------------|
+| PROCESSNAME  | Filter process name                                                                                 | perl              |             |
+| PROCESSARGS  | Filter process arguments                                                                            | /usr/bin/gorgoned |             |
+| PROCESSPATH  | Filter process path                                                                                 |                   |             |
+| CRITICAL     | Threshold critical of matching processes count                                                      | 1:1               |             |
+| WARNING      | Threshold warning of matching processes count                                                       |                   |             |
+| EXTRAOPTIONS | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options) | --cpu --memory    |             |
+
+</TabItem>
+<TabItem value="proc-ntpd" label="proc-ntpd">
+
+| Macro        | Description                                                                                         | Default value     | Mandatory   |
+|:-------------|:----------------------------------------------------------------------------------------------------|:------------------|:------------|
+| PROCESSNAME  | Filter process name                                                                                 | ntpd|chronyd      |             |
+| PROCESSPATH  | Filter process path                                                                                 |                   |             |
+| PROCESSARGS  | Filter process arguments                                                                            |                   |             |
+| CRITICAL     | Threshold critical of matching processes count                                                      | 1:1               |             |
+| WARNING      | Threshold warning of matching processes count                                                       |                   |             |
+| EXTRAOPTIONS | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options) |                   |             |
+
+</TabItem>
+<TabItem value="proc-sshd" label="proc-sshd">
+
+| Macro        | Description                                                                                         | Default value     | Mandatory   |
+|:-------------|:----------------------------------------------------------------------------------------------------|:------------------|:------------|
+| PROCESSNAME  | Filter process name                                                                                 | sshd              |             |
+| PROCESSPATH  | Filter process path                                                                                 |                   |             |
+| PROCESSARGS  | Filter process arguments                                                                            |                   |             |
+| WARNING      | Threshold warning of matching processes count                                                       |                   |             |
+| CRITICAL     | Threshold critical of matching processes count                                                      |                   |             |
+| EXTRAOPTIONS | Any extra option you may want to add to the command (E.g. a --verbose flag). All options are listed [here](#available-options) |                   |             |
+
+</TabItem>
+</Tabs>
+
+3. [Deploy the configuration](/docs/monitoring/monitoring-servers/deploying-a-configuration). The service appears in the list of service, and on page **Resources Status**. The command that is sent by the connector is displayed in the details panel of the service: it shows the values of the macros.
+
+## How to check in the CLI that the configuration is OK and what are the main options for?
+
+Once the plugin is installed, log into your Centreon poller's CLI using the
+**centreon-engine** user account (`su - centreon-engine`). Test that the connector 
+is able to monitor a server using a command like this one (replace the sample values by yours):
+
+```bash
+/usr/lib/centreon/plugins//centreon_centreon_poller.pl \
+	--plugin=apps::centreon::local::plugin \
+	--hostname=10.0.0.1 \
+	--mode=broker-stats \
+	--broker-stats-file='/var/lib/centreon-engine/*-module-stats.json' \
+	--filter-name='' \
+	--warning-speed-events='' \
+	--critical-speed-events='' \
+	--warning-queued-events='' \
+	--critical-queued-events='' \
+	--warning-unacknowledged-events='' \
+	--critical-unacknowledged-events='' \
+	--warning-status='' \
+	--critical-status='%{type} eq "output" and %{queue_file_enabled} =~ /true|yes/i' \
+	--verbose \
+	--ssh-username='centreon'\
+	
 ```
 
 The expected command output is shown below:
 
 ```bash
-OK:  Speed Events: %s/s Queued Events: %s Unacknowledged Events: %s | 
-```
-
-All available options for a given mode can be displayed by adding the 
-`--help` parameter to the command:
-
-```bash
-/usr/lib/centreon/plugins//centreon_centreon_central.pl \
-    --plugin=apps::centreon::local::plugin \
-    --hostname=10.0.0.1 \
-    --help
-```
-
-All available options for a given mode can be displayed by adding the 
-`--list-mode` parameter to the command:
-
-```bash
-/usr/lib/centreon/plugins//centreon_centreon_central.pl \
-    --plugin=apps::centreon::local::plugin \
-    --list-mode
+OK:     | 
 ```
 
 ### Troubleshooting
 
-Please find all the troubleshooting documentation for the Centreon Plugins in the [dedicated page](../getting-started/how-to-guides/troubleshooting-plugins.md).
+Please find the [troubleshooting documentation](../getting-started/how-to-guides/troubleshooting-plugins.md)
+for Centreon Plugins typical issues.
+
+### Available modes
+
+All available modes can be displayed by adding the `--list-mode` parameter to
+the command:
+
+```bash
+/usr/lib/centreon/plugins//centreon_centreon_poller.pl \
+	--plugin=apps::centreon::local::plugin \
+    --list-mode
+```
+
+The plugin brings the following modes:
+
+| Mode                     | Linked service template                                                                                                                                                                                  |
+|:-------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| arp                      | Not used in this Monitoring Connector                                                                                                                                                                    |
+| bamservice               | Not used in this Monitoring Connector                                                                                                                                                                    |
+| broker-stats             | App-Monitoring-Centreon-Broker-Stats-Poller-custom                                                                                                                                                       |
+| centengine-stats         | Not used in this Monitoring Connector                                                                                                                                                                    |
+| centreon-plugins-version | Not used in this Monitoring Connector                                                                                                                                                                    |
+| cpu                      | Not used in this Monitoring Connector                                                                                                                                                                    |
+| cpu-detailed             | Not used in this Monitoring Connector                                                                                                                                                                    |
+| disk-usage               | Not used in this Monitoring Connector                                                                                                                                                                    |
+| diskio                   | Not used in this Monitoring Connector                                                                                                                                                                    |
+| downtime-trap            | Not used in this Monitoring Connector                                                                                                                                                                    |
+| dummy                    | Not used in this Monitoring Connector                                                                                                                                                                    |
+| inodes                   | Not used in this Monitoring Connector                                                                                                                                                                    |
+| interfaces               | Not used in this Monitoring Connector                                                                                                                                                                    |
+| list-diskspath           | Not used in this Monitoring Connector                                                                                                                                                                    |
+| list-interfaces          | Not used in this Monitoring Connector                                                                                                                                                                    |
+| list-processes           | Not used in this Monitoring Connector                                                                                                                                                                    |
+| list-storages            | Not used in this Monitoring Connector                                                                                                                                                                    |
+| load                     | Not used in this Monitoring Connector                                                                                                                                                                    |
+| memory                   | Not used in this Monitoring Connector                                                                                                                                                                    |
+| metaservice              | Not used in this Monitoring Connector                                                                                                                                                                    |
+| not-so-dummy             | Not used in this Monitoring Connector                                                                                                                                                                    |
+| processcount             | App-Monitoring-Centreon-Process-centengine-custom<br />App-Monitoring-Centreon-Process-gorgoned-custom<br />App-Monitoring-Centreon-Process-ntpd-custom<br />App-Monitoring-Centreon-Process-sshd-custom |
+| retention-broker         | Not used in this Monitoring Connector                                                                                                                                                                    |
+| storage                  | Not used in this Monitoring Connector                                                                                                                                                                    |
+| swap                     | Not used in this Monitoring Connector                                                                                                                                                                    |
+| tcpcon                   | Not used in this Monitoring Connector                                                                                                                                                                    |
+| time                     | Not used in this Monitoring Connector                                                                                                                                                                    |
+| udpcon                   | Not used in this Monitoring Connector                                                                                                                                                                    |
+| uptime                   | Not used in this Monitoring Connector                                                                                                                                                                    |
+
+### Available options
+
+#### Generic options
+
+All generic options are listed here:
+
+| Option                                     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Type   |
+|:-------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------|
+| --mode                                     | Define the mode in which you want the plugin to be executed (see--list-mode).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Global |
+| --dyn-mode                                 | Specify a mode with the module's path (advanced).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Global |
+| --list-mode                                | List all available modes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Global |
+| --mode-version                             | Check minimal version of mode. If not, unknown error.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Global |
+| --version                                  | Return the version of the plugin.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Global |
+| --pass-manager                             | Define the password manager you want to use. Supported managers are: environment, file, keepass, hashicorpvault and teampass.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Global |
+| --verbose                                  | Display extended status information (long output).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Output |
+| --debug                                    | Display debug messages.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Output |
+| --filter-perfdata                          | Filter perfdata that match the regexp. Eg: adding --filter-perfdata='avg' will remove all metrics that do not contain 'avg' from performance data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Output |
+| --filter-perfdata-adv                      | Filter perfdata based on a "if" condition using the following variables: label, value, unit, warning, critical, min, max. Variables must be written either %{variable} or %(variable). Eg: adding --filter-perfdata-adv='not (%(value) == 0 and %(max) eq "")' will remove all metrics whose value equals 0 and that don't have a maximum value.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Output |
+| --explode-perfdata-max                     | Create a new metric for each metric that comes with a maximum limit. The new metric will be named identically with a '\_max' suffix). Eg: it will split 'used\_prct'=26.93%;0:80;0:90;0;100 into 'used\_prct'=26.93%;0:80;0:90;0;100 'used\_prct\_max'=100%;;;;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Output |
+| --change-perfdata --extend-perfdata        | Change or extend perfdata. Syntax: --extend-perfdata=searchlabel,newlabel,target\[,\[newuom\],\[min\],\[m ax\]\]  Common examples:      Convert storage free perfdata into used:     --change-perfdata=free,used,invert()      Convert storage free perfdata into used:     --change-perfdata=used,free,invert()      Scale traffic values automatically:     --change-perfdata=traffic,,scale(auto)      Scale traffic values in Mbps:     --change-perfdata=traffic\_in,,scale(Mbps),mbps      Change traffic values in percent:     --change-perfdata=traffic\_in,,percent()                                                                                                                                                                                                                                                                                                                                                                          | Output |
+| --extend-perfdata-group                    | Add new aggregated metrics (min, max, average or sum) for groups of metrics defined by a regex match on the metrics' names. Syntax: --extend-perfdata-group=regex,namesofnewmetrics,calculation\[,\[ne wuom\],\[min\],\[max\]\] regex: regular expression namesofnewmetrics: how the new metrics' names are composed (can use $1, $2... for groups defined by () in regex). calculation: how the values of the new metrics should be calculated newuom (optional): unit of measure for the new metrics min (optional): lowest value the metrics can reach max (optional): highest value the metrics can reach  Common examples:      Sum wrong packets from all interfaces (with interface need     --units-errors=absolute):     --extend-perfdata-group=',packets\_wrong,sum(packets\_(discard     \|error)\_(in\|out))'      Sum traffic by interface:     --extend-perfdata-group='traffic\_in\_(.*),traffic\_$1,sum(traf     fic\_(in\|out)\_$1)'   | Output |
+| --change-short-output --change-long-output | Modify the short/long output that is returned by the plugin. Syntax: --change-short-output=pattern~replacement~modifier Most commonly used modifiers are i (case insensitive) and g (replace all occurrences). Eg: adding --change-short-output='OK~Up~gi' will replace all occurrences of 'OK', 'ok', 'Ok' or 'oK' with 'Up'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Output |
+| --change-exit                              | Replace an exit code with one of your choice. Eg: adding --change-exit=unknown=critical will result in a CRITICAL state instead of an UNKNOWN state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Output |
+| --range-perfdata                           | Change perfdata range thresholds display: 1 = start value equals to '0' is removed, 2 = threshold range is not display.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Output |
+| --filter-uom                               | Masks the units when they don't match the given regular expression.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Output |
+| --opt-exit                                 | Replace the exit code in case of an execution error (i.e. wrong option provided, SSH connection refused, timeout, etc). Default: unknown.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Output |
+| --output-ignore-perfdata                   | Remove all the metrics from the service. The service will still have a status and an output.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Output |
+| --output-ignore-label                      | Remove the status label ("OK:", "WARNING:", "UNKNOWN:", CRITICAL:") from the beginning of the output. Eg: 'OK: Ram Total:...' will become 'Ram Total:...'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Output |
+| --output-xml                               | Return the output in XML format (to send to an XML API).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Output |
+| --output-json                              | Return the output in JSON format (to send to a JSON API).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Output |
+| --output-openmetrics                       | Return the output in OpenMetrics format (to send to a tool expecting this format).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Output |
+| --output-file                              | Write output in file (can be combined with json, xml and openmetrics options). E.g.: --output-file=/tmp/output.txt will write the output in /tmp/output.txt.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Output |
+| --disco-format                             | Applies only to modes beginning with 'list-'. Returns the list of available macros to configure a service discovery rule (formatted in XML).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Output |
+| --disco-show                               | Applies only to modes beginning with 'list-'. Returns the list of discovered objects (formatted in XML) for service discovery.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Output |
+| --float-precision                          | Define the float precision for thresholds (default: 8).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Output |
+| --source-encoding                          | Define the character encoding of the response sent by the monitored resource Default: 'UTF-8'.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Output |
+
+#### Modes options
+
+All modes specific options are listed here:
+
+<Tabs groupId="sync">
+<TabItem value="Broker-Stats" label="Broker-Stats">
+
+| Option                   | Description                                                                                                                                                                                                         | Type           |
+|:-------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------|
+| --ssh-backend            | Define the backend you want to use. It can be: sshcli (default), plink and libssh.                                                                                                                                  | Ssh global     |
+| --ssh-username           | Define the user name to log in to the host.                                                                                                                                                                         | Ssh global     |
+| --ssh-password           | Define the password associated with the user name. Cannot be used with the sshcli backend. Warning: using a password is not recommended. Use --ssh-priv-key instead.                                                | Ssh global     |
+| --ssh-port               | Define the TCP port on which SSH is listening.                                                                                                                                                                      | Ssh global     |
+| --ssh-priv-key           | Define the private key file to use for user authentication.                                                                                                                                                         | Ssh global     |
+| --sshcli-command         | ssh command (default: 'ssh').                                                                                                                                                                                       | Backend sshcli |
+| --sshcli-path            | ssh command path (default: none)                                                                                                                                                                                    | Backend sshcli |
+| --sshcli-option          | Specify ssh cli options (example: --sshcli-option='-o=StrictHostKeyChecking=no').                                                                                                                                   | Backend sshcli |
+| --plink-command          | plink command (default: 'plink').                                                                                                                                                                                   | Backend plink  |
+| --plink-path             | plink command path (default: none)                                                                                                                                                                                  | Backend plink  |
+| --plink-option           | Specify plink options (example: --plink-option='-T').                                                                                                                                                               | Backend plink  |
+| --libssh-strict-connect  | Connection won't be OK even if there is a problem (server known changed or server found other) with the ssh server.                                                                                                 | Backend libssh |
+| --hostname               | Hostname to query in ssh.                                                                                                                                                                                           | Mode           |
+| --timeout                | Timeout in seconds for the command (Default: 30).                                                                                                                                                                   | Mode           |
+| --sudo                   | Use 'sudo' to execute the command.                                                                                                                                                                                  | Mode           |
+| --broker-stats-file      | Specify the centreon-broker json stats file (Required). Can be multiple.                                                                                                                                            | Mode           |
+| --filter-name            | Filter endpoint name.                                                                                                                                                                                               | Mode           |
+| --warning-* --critical-* | Thresholds. Can be: 'speed-events', 'queued-events', 'unacknowledged-events'.                                                                                                                                       | Mode           |
+| --warning-status         | Set warning threshold for status. You can use the following variables: %{queue\_file\_enabled}, %{state}, %{status}, %{type}, %{display}                                                                            | Mode           |
+| --critical-status        | Set critical threshold for status (Default: '%{type} eq "output" and %{queue\_file\_enabled} =~ /yes/i'). You can use the following variables: %{queue\_file\_enabled}, %{state}, %{status}, %{type}, %{display}    | Mode           |
+
+</TabItem>
+<TabItem value="proc-centengine" label="proc-centengine">
+
+| Option                    | Description                                                                                                                                                                                                                                   | Type      |
+|:--------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------|
+| --hostname                | Name or address of the host to monitor (mandatory).                                                                                                                                                                                           | SNMP      |
+| --snmp-community          | SNMP community (default value: public). It is recommended to use a read-only community.                                                                                                                                                       | SNMP      |
+| --snmp-version            | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3.                                                                                                                                                         | SNMP      |
+| --snmp-port               | UDP port to send the SNMP request to (default: 161).                                                                                                                                                                                          | SNMP      |
+| --snmp-timeout            | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries.                                                                                                                | SNMP      |
+| --snmp-retries            | Maximum number of retries (default: 5).                                                                                                                                                                                                       | SNMP      |
+| --maxrepetitions          | Max repetitions value (default: 50) (only for SNMP v2 and v3).                                                                                                                                                                                | SNMP      |
+| --subsetleef              | How many oid values per SNMP request (default: 50) (for get\_leef method. Be cautious when you set it. Prefer to let the default value).                                                                                                      | SNMP      |
+| --snmp-autoreduce         | Progressively reduce the number requested OIDs in bulk mode. Use it in case of SNMP errors (By default, the number is divided by 2).                                                                                                          | SNMP      |
+| --snmp-force-getnext      | Use snmp getnext function in snmp v2c and v3. This will request one OID at a time.                                                                                                                                                            | SNMP      |
+| --snmp-cache-file         | Use SNMP cache file.                                                                                                                                                                                                                          | SNMP      |
+| --snmp-username           | SNMP v3 only: User name (securityName).                                                                                                                                                                                                       | SNMP      |
+| --authpassphrase          | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option.                                                                                                                                      | SNMP      |
+| --authprotocol            | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512.                                                                                                                                        | SNMP      |
+| --privpassphrase          | SNMP v3 only: Privacy pass phrase (privPassword) to encrypt messages using the protocol defined in the --privprotocol option.                                                                                                                 | SNMP      |
+| --privprotocol            | SNMP v3 only: Privacy protocol (privProtocol) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C.                                                                         | SNMP      |
+| --contextname             | SNMP v3 only: Context name (contextName), if relevant for the monitored host.                                                                                                                                                                 | SNMP      |
+| --contextengineid         | SNMP v3 only: Context engine ID (contextEngineID), if relevant for the monitored host, given as a hexadecimal string.                                                                                                                         | SNMP      |
+| --securityengineid        | SNMP v3 only: Security engine ID, given as a hexadecimal string.                                                                                                                                                                              | SNMP      |
+| --snmp-errors-exit        | Expected status in case of SNMP error or timeout. Possible values are warning, critical and unknown (default).                                                                                                                                | SNMP      |
+| --snmp-tls-transport      | Transport protocol for TLS communication (can be: 'dtlsudp', 'tlstcp').                                                                                                                                                                       | SNMP      |
+| --snmp-tls-our-identity   | X.509 certificate to identify ourselves. Can be the path to the certificate file or its contents.                                                                                                                                             | SNMP      |
+| --snmp-tls-their-identity | X.509 certificate to identify the remote host. Can be the path to the certificate file or its contents. This option is unnecessary if the certificate is already trusted by your system.                                                      | SNMP      |
+| --snmp-tls-their-hostname | Common Name (CN) expected in the certificate sent by the host if it differs from the value of the --hostname parameter.                                                                                                                       | SNMP      |
+| --snmp-tls-trust-cert     | A trusted CA certificate used to verify a remote host's certificate. If you use this option, you must also define --snmp-tls-their-hostname.                                                                                                  | SNMP      |
+| --memcached               | Memcached server to use (only one server).                                                                                                                                                                                                    | Retention |
+| --redis-server            | Redis server to use (only one server). Syntax: address\[:port\]                                                                                                                                                                               | Retention |
+| --redis-attribute         | Set Redis Options (--redis-attribute="cnx\_timeout=5").                                                                                                                                                                                       | Retention |
+| --redis-db                | Set Redis database index.                                                                                                                                                                                                                     | Retention |
+| --failback-file           | Failback on a local file if redis connection failed.                                                                                                                                                                                          | Retention |
+| --memexpiration           | Time to keep data in seconds (Default: 86400).                                                                                                                                                                                                | Retention |
+| --statefile-dir           | Define the cache directory (default: '/var/lib/centreon/centplugins').                                                                                                                                                                        | Retention |
+| --statefile-suffix        | Define a suffix to customize the statefile name (Default: '').                                                                                                                                                                                | Retention |
+| --statefile-concat-cwd    | If used with the '--statefile-dir' option, the latter's value will be used as a sub-directory of the current working directory. Useful on Windows when the plugin is compiled, as the file system and permissions are different from Linux.   | Retention |
+| --statefile-format        | Define the format used to store the cache. Available formats: 'dumper', 'storable', 'json' (default).                                                                                                                                         | Retention |
+| --statefile-key           | Define the key to encrypt/decrypt the cache.                                                                                                                                                                                                  | Retention |
+| --statefile-cipher        | Define the cipher algorithm to encrypt the cache (Default: 'AES').                                                                                                                                                                            | Retention |
+| --process-status          | Filter process status. Can be a regexp. (Default: 'running\|runnable').                                                                                                                                                                       | Mode      |
+| --process-name            | Filter process name.                                                                                                                                                                                                                          | Mode      |
+| --regexp-name             | Allows to use regexp to filter process name (with option --process-name).                                                                                                                                                                     | Mode      |
+| --process-path            | Filter process path.                                                                                                                                                                                                                          | Mode      |
+| --regexp-path             | Allows to use regexp to filter process path (with option --process-path).                                                                                                                                                                     | Mode      |
+| --process-args            | Filter process arguments.                                                                                                                                                                                                                     | Mode      |
+| --regexp-args             | Allows to use regexp to filter process arguments (with option --process-args).                                                                                                                                                                | Mode      |
+| --warning                 | Threshold warning of matching processes count.                                                                                                                                                                                                | Mode      |
+| --critical                | Threshold critical of matching processes count.                                                                                                                                                                                               | Mode      |
+| --memory                  | Check memory usage.                                                                                                                                                                                                                           | Mode      |
+| --warning-mem-each        | Threshold warning of memory used by each matching processes (in Bytes).                                                                                                                                                                       | Mode      |
+| --critical-mem-each       | Threshold critical of memory used by each matching processes (in Bytes).                                                                                                                                                                      | Mode      |
+| --warning-mem-total       | Threshold warning of total memory used by matching processes (in Bytes).                                                                                                                                                                      | Mode      |
+| --critical-mem-total      | Threshold critical of total memory used by matching processes (in Bytes).                                                                                                                                                                     | Mode      |
+| --warning-mem-avg         | Threshold warning of average memory used by matching processes (in Bytes).                                                                                                                                                                    | Mode      |
+| --critical-mem-avg        | Threshold critical of average memory used by matching processes (in Bytes).                                                                                                                                                                   | Mode      |
+| --cpu                     | Check cpu usage. Should be used with fix processes. If processespid changes too much, the plugin can't compute values.                                                                                                                        | Mode      |
+| --warning-cpu-total       | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%.                                                         | Mode      |
+| --critical-cpu-total      | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%.                                                        | Mode      |
+| --top                     | Enable top memory usage display.                                                                                                                                                                                                              | Mode      |
+| --top-num                 | Number of processes in top memory display (Default: 5).                                                                                                                                                                                       | Mode      |
+| --top-size                | Minimum memory usage to be in top memory display (Default: 52428800 -\> 50 MB).                                                                                                                                                               | Mode      |
+
+</TabItem>
+<TabItem value="proc-gorgoned" label="proc-gorgoned">
+
+| Option                    | Description                                                                                                                                                                                                                                   | Type      |
+|:--------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------|
+| --hostname                | Name or address of the host to monitor (mandatory).                                                                                                                                                                                           | SNMP      |
+| --snmp-community          | SNMP community (default value: public). It is recommended to use a read-only community.                                                                                                                                                       | SNMP      |
+| --snmp-version            | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3.                                                                                                                                                         | SNMP      |
+| --snmp-port               | UDP port to send the SNMP request to (default: 161).                                                                                                                                                                                          | SNMP      |
+| --snmp-timeout            | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries.                                                                                                                | SNMP      |
+| --snmp-retries            | Maximum number of retries (default: 5).                                                                                                                                                                                                       | SNMP      |
+| --maxrepetitions          | Max repetitions value (default: 50) (only for SNMP v2 and v3).                                                                                                                                                                                | SNMP      |
+| --subsetleef              | How many oid values per SNMP request (default: 50) (for get\_leef method. Be cautious when you set it. Prefer to let the default value).                                                                                                      | SNMP      |
+| --snmp-autoreduce         | Progressively reduce the number requested OIDs in bulk mode. Use it in case of SNMP errors (By default, the number is divided by 2).                                                                                                          | SNMP      |
+| --snmp-force-getnext      | Use snmp getnext function in snmp v2c and v3. This will request one OID at a time.                                                                                                                                                            | SNMP      |
+| --snmp-cache-file         | Use SNMP cache file.                                                                                                                                                                                                                          | SNMP      |
+| --snmp-username           | SNMP v3 only: User name (securityName).                                                                                                                                                                                                       | SNMP      |
+| --authpassphrase          | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option.                                                                                                                                      | SNMP      |
+| --authprotocol            | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512.                                                                                                                                        | SNMP      |
+| --privpassphrase          | SNMP v3 only: Privacy pass phrase (privPassword) to encrypt messages using the protocol defined in the --privprotocol option.                                                                                                                 | SNMP      |
+| --privprotocol            | SNMP v3 only: Privacy protocol (privProtocol) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C.                                                                         | SNMP      |
+| --contextname             | SNMP v3 only: Context name (contextName), if relevant for the monitored host.                                                                                                                                                                 | SNMP      |
+| --contextengineid         | SNMP v3 only: Context engine ID (contextEngineID), if relevant for the monitored host, given as a hexadecimal string.                                                                                                                         | SNMP      |
+| --securityengineid        | SNMP v3 only: Security engine ID, given as a hexadecimal string.                                                                                                                                                                              | SNMP      |
+| --snmp-errors-exit        | Expected status in case of SNMP error or timeout. Possible values are warning, critical and unknown (default).                                                                                                                                | SNMP      |
+| --snmp-tls-transport      | Transport protocol for TLS communication (can be: 'dtlsudp', 'tlstcp').                                                                                                                                                                       | SNMP      |
+| --snmp-tls-our-identity   | X.509 certificate to identify ourselves. Can be the path to the certificate file or its contents.                                                                                                                                             | SNMP      |
+| --snmp-tls-their-identity | X.509 certificate to identify the remote host. Can be the path to the certificate file or its contents. This option is unnecessary if the certificate is already trusted by your system.                                                      | SNMP      |
+| --snmp-tls-their-hostname | Common Name (CN) expected in the certificate sent by the host if it differs from the value of the --hostname parameter.                                                                                                                       | SNMP      |
+| --snmp-tls-trust-cert     | A trusted CA certificate used to verify a remote host's certificate. If you use this option, you must also define --snmp-tls-their-hostname.                                                                                                  | SNMP      |
+| --memcached               | Memcached server to use (only one server).                                                                                                                                                                                                    | Retention |
+| --redis-server            | Redis server to use (only one server). Syntax: address\[:port\]                                                                                                                                                                               | Retention |
+| --redis-attribute         | Set Redis Options (--redis-attribute="cnx\_timeout=5").                                                                                                                                                                                       | Retention |
+| --redis-db                | Set Redis database index.                                                                                                                                                                                                                     | Retention |
+| --failback-file           | Failback on a local file if redis connection failed.                                                                                                                                                                                          | Retention |
+| --memexpiration           | Time to keep data in seconds (Default: 86400).                                                                                                                                                                                                | Retention |
+| --statefile-dir           | Define the cache directory (default: '/var/lib/centreon/centplugins').                                                                                                                                                                        | Retention |
+| --statefile-suffix        | Define a suffix to customize the statefile name (Default: '').                                                                                                                                                                                | Retention |
+| --statefile-concat-cwd    | If used with the '--statefile-dir' option, the latter's value will be used as a sub-directory of the current working directory. Useful on Windows when the plugin is compiled, as the file system and permissions are different from Linux.   | Retention |
+| --statefile-format        | Define the format used to store the cache. Available formats: 'dumper', 'storable', 'json' (default).                                                                                                                                         | Retention |
+| --statefile-key           | Define the key to encrypt/decrypt the cache.                                                                                                                                                                                                  | Retention |
+| --statefile-cipher        | Define the cipher algorithm to encrypt the cache (Default: 'AES').                                                                                                                                                                            | Retention |
+| --process-status          | Filter process status. Can be a regexp. (Default: 'running\|runnable').                                                                                                                                                                       | Mode      |
+| --process-name            | Filter process name.                                                                                                                                                                                                                          | Mode      |
+| --regexp-name             | Allows to use regexp to filter process name (with option --process-name).                                                                                                                                                                     | Mode      |
+| --process-path            | Filter process path.                                                                                                                                                                                                                          | Mode      |
+| --regexp-path             | Allows to use regexp to filter process path (with option --process-path).                                                                                                                                                                     | Mode      |
+| --process-args            | Filter process arguments.                                                                                                                                                                                                                     | Mode      |
+| --regexp-args             | Allows to use regexp to filter process arguments (with option --process-args).                                                                                                                                                                | Mode      |
+| --warning                 | Threshold warning of matching processes count.                                                                                                                                                                                                | Mode      |
+| --critical                | Threshold critical of matching processes count.                                                                                                                                                                                               | Mode      |
+| --memory                  | Check memory usage.                                                                                                                                                                                                                           | Mode      |
+| --warning-mem-each        | Threshold warning of memory used by each matching processes (in Bytes).                                                                                                                                                                       | Mode      |
+| --critical-mem-each       | Threshold critical of memory used by each matching processes (in Bytes).                                                                                                                                                                      | Mode      |
+| --warning-mem-total       | Threshold warning of total memory used by matching processes (in Bytes).                                                                                                                                                                      | Mode      |
+| --critical-mem-total      | Threshold critical of total memory used by matching processes (in Bytes).                                                                                                                                                                     | Mode      |
+| --warning-mem-avg         | Threshold warning of average memory used by matching processes (in Bytes).                                                                                                                                                                    | Mode      |
+| --critical-mem-avg        | Threshold critical of average memory used by matching processes (in Bytes).                                                                                                                                                                   | Mode      |
+| --cpu                     | Check cpu usage. Should be used with fix processes. If processespid changes too much, the plugin can't compute values.                                                                                                                        | Mode      |
+| --warning-cpu-total       | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%.                                                         | Mode      |
+| --critical-cpu-total      | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%.                                                        | Mode      |
+| --top                     | Enable top memory usage display.                                                                                                                                                                                                              | Mode      |
+| --top-num                 | Number of processes in top memory display (Default: 5).                                                                                                                                                                                       | Mode      |
+| --top-size                | Minimum memory usage to be in top memory display (Default: 52428800 -\> 50 MB).                                                                                                                                                               | Mode      |
+
+</TabItem>
+<TabItem value="proc-ntpd" label="proc-ntpd">
+
+| Option                    | Description                                                                                                                                                                                                                                   | Type      |
+|:--------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------|
+| --hostname                | Name or address of the host to monitor (mandatory).                                                                                                                                                                                           | SNMP      |
+| --snmp-community          | SNMP community (default value: public). It is recommended to use a read-only community.                                                                                                                                                       | SNMP      |
+| --snmp-version            | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3.                                                                                                                                                         | SNMP      |
+| --snmp-port               | UDP port to send the SNMP request to (default: 161).                                                                                                                                                                                          | SNMP      |
+| --snmp-timeout            | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries.                                                                                                                | SNMP      |
+| --snmp-retries            | Maximum number of retries (default: 5).                                                                                                                                                                                                       | SNMP      |
+| --maxrepetitions          | Max repetitions value (default: 50) (only for SNMP v2 and v3).                                                                                                                                                                                | SNMP      |
+| --subsetleef              | How many oid values per SNMP request (default: 50) (for get\_leef method. Be cautious when you set it. Prefer to let the default value).                                                                                                      | SNMP      |
+| --snmp-autoreduce         | Progressively reduce the number requested OIDs in bulk mode. Use it in case of SNMP errors (By default, the number is divided by 2).                                                                                                          | SNMP      |
+| --snmp-force-getnext      | Use snmp getnext function in snmp v2c and v3. This will request one OID at a time.                                                                                                                                                            | SNMP      |
+| --snmp-cache-file         | Use SNMP cache file.                                                                                                                                                                                                                          | SNMP      |
+| --snmp-username           | SNMP v3 only: User name (securityName).                                                                                                                                                                                                       | SNMP      |
+| --authpassphrase          | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option.                                                                                                                                      | SNMP      |
+| --authprotocol            | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512.                                                                                                                                        | SNMP      |
+| --privpassphrase          | SNMP v3 only: Privacy pass phrase (privPassword) to encrypt messages using the protocol defined in the --privprotocol option.                                                                                                                 | SNMP      |
+| --privprotocol            | SNMP v3 only: Privacy protocol (privProtocol) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C.                                                                         | SNMP      |
+| --contextname             | SNMP v3 only: Context name (contextName), if relevant for the monitored host.                                                                                                                                                                 | SNMP      |
+| --contextengineid         | SNMP v3 only: Context engine ID (contextEngineID), if relevant for the monitored host, given as a hexadecimal string.                                                                                                                         | SNMP      |
+| --securityengineid        | SNMP v3 only: Security engine ID, given as a hexadecimal string.                                                                                                                                                                              | SNMP      |
+| --snmp-errors-exit        | Expected status in case of SNMP error or timeout. Possible values are warning, critical and unknown (default).                                                                                                                                | SNMP      |
+| --snmp-tls-transport      | Transport protocol for TLS communication (can be: 'dtlsudp', 'tlstcp').                                                                                                                                                                       | SNMP      |
+| --snmp-tls-our-identity   | X.509 certificate to identify ourselves. Can be the path to the certificate file or its contents.                                                                                                                                             | SNMP      |
+| --snmp-tls-their-identity | X.509 certificate to identify the remote host. Can be the path to the certificate file or its contents. This option is unnecessary if the certificate is already trusted by your system.                                                      | SNMP      |
+| --snmp-tls-their-hostname | Common Name (CN) expected in the certificate sent by the host if it differs from the value of the --hostname parameter.                                                                                                                       | SNMP      |
+| --snmp-tls-trust-cert     | A trusted CA certificate used to verify a remote host's certificate. If you use this option, you must also define --snmp-tls-their-hostname.                                                                                                  | SNMP      |
+| --memcached               | Memcached server to use (only one server).                                                                                                                                                                                                    | Retention |
+| --redis-server            | Redis server to use (only one server). Syntax: address\[:port\]                                                                                                                                                                               | Retention |
+| --redis-attribute         | Set Redis Options (--redis-attribute="cnx\_timeout=5").                                                                                                                                                                                       | Retention |
+| --redis-db                | Set Redis database index.                                                                                                                                                                                                                     | Retention |
+| --failback-file           | Failback on a local file if redis connection failed.                                                                                                                                                                                          | Retention |
+| --memexpiration           | Time to keep data in seconds (Default: 86400).                                                                                                                                                                                                | Retention |
+| --statefile-dir           | Define the cache directory (default: '/var/lib/centreon/centplugins').                                                                                                                                                                        | Retention |
+| --statefile-suffix        | Define a suffix to customize the statefile name (Default: '').                                                                                                                                                                                | Retention |
+| --statefile-concat-cwd    | If used with the '--statefile-dir' option, the latter's value will be used as a sub-directory of the current working directory. Useful on Windows when the plugin is compiled, as the file system and permissions are different from Linux.   | Retention |
+| --statefile-format        | Define the format used to store the cache. Available formats: 'dumper', 'storable', 'json' (default).                                                                                                                                         | Retention |
+| --statefile-key           | Define the key to encrypt/decrypt the cache.                                                                                                                                                                                                  | Retention |
+| --statefile-cipher        | Define the cipher algorithm to encrypt the cache (Default: 'AES').                                                                                                                                                                            | Retention |
+| --process-status          | Filter process status. Can be a regexp. (Default: 'running\|runnable').                                                                                                                                                                       | Mode      |
+| --process-name            | Filter process name.                                                                                                                                                                                                                          | Mode      |
+| --regexp-name             | Allows to use regexp to filter process name (with option --process-name).                                                                                                                                                                     | Mode      |
+| --process-path            | Filter process path.                                                                                                                                                                                                                          | Mode      |
+| --regexp-path             | Allows to use regexp to filter process path (with option --process-path).                                                                                                                                                                     | Mode      |
+| --process-args            | Filter process arguments.                                                                                                                                                                                                                     | Mode      |
+| --regexp-args             | Allows to use regexp to filter process arguments (with option --process-args).                                                                                                                                                                | Mode      |
+| --warning                 | Threshold warning of matching processes count.                                                                                                                                                                                                | Mode      |
+| --critical                | Threshold critical of matching processes count.                                                                                                                                                                                               | Mode      |
+| --memory                  | Check memory usage.                                                                                                                                                                                                                           | Mode      |
+| --warning-mem-each        | Threshold warning of memory used by each matching processes (in Bytes).                                                                                                                                                                       | Mode      |
+| --critical-mem-each       | Threshold critical of memory used by each matching processes (in Bytes).                                                                                                                                                                      | Mode      |
+| --warning-mem-total       | Threshold warning of total memory used by matching processes (in Bytes).                                                                                                                                                                      | Mode      |
+| --critical-mem-total      | Threshold critical of total memory used by matching processes (in Bytes).                                                                                                                                                                     | Mode      |
+| --warning-mem-avg         | Threshold warning of average memory used by matching processes (in Bytes).                                                                                                                                                                    | Mode      |
+| --critical-mem-avg        | Threshold critical of average memory used by matching processes (in Bytes).                                                                                                                                                                   | Mode      |
+| --cpu                     | Check cpu usage. Should be used with fix processes. If processespid changes too much, the plugin can't compute values.                                                                                                                        | Mode      |
+| --warning-cpu-total       | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%.                                                         | Mode      |
+| --critical-cpu-total      | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%.                                                        | Mode      |
+| --top                     | Enable top memory usage display.                                                                                                                                                                                                              | Mode      |
+| --top-num                 | Number of processes in top memory display (Default: 5).                                                                                                                                                                                       | Mode      |
+| --top-size                | Minimum memory usage to be in top memory display (Default: 52428800 -\> 50 MB).                                                                                                                                                               | Mode      |
+
+</TabItem>
+<TabItem value="proc-sshd" label="proc-sshd">
+
+| Option                    | Description                                                                                                                                                                                                                                   | Type      |
+|:--------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------|
+| --hostname                | Name or address of the host to monitor (mandatory).                                                                                                                                                                                           | SNMP      |
+| --snmp-community          | SNMP community (default value: public). It is recommended to use a read-only community.                                                                                                                                                       | SNMP      |
+| --snmp-version            | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3.                                                                                                                                                         | SNMP      |
+| --snmp-port               | UDP port to send the SNMP request to (default: 161).                                                                                                                                                                                          | SNMP      |
+| --snmp-timeout            | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries.                                                                                                                | SNMP      |
+| --snmp-retries            | Maximum number of retries (default: 5).                                                                                                                                                                                                       | SNMP      |
+| --maxrepetitions          | Max repetitions value (default: 50) (only for SNMP v2 and v3).                                                                                                                                                                                | SNMP      |
+| --subsetleef              | How many oid values per SNMP request (default: 50) (for get\_leef method. Be cautious when you set it. Prefer to let the default value).                                                                                                      | SNMP      |
+| --snmp-autoreduce         | Progressively reduce the number requested OIDs in bulk mode. Use it in case of SNMP errors (By default, the number is divided by 2).                                                                                                          | SNMP      |
+| --snmp-force-getnext      | Use snmp getnext function in snmp v2c and v3. This will request one OID at a time.                                                                                                                                                            | SNMP      |
+| --snmp-cache-file         | Use SNMP cache file.                                                                                                                                                                                                                          | SNMP      |
+| --snmp-username           | SNMP v3 only: User name (securityName).                                                                                                                                                                                                       | SNMP      |
+| --authpassphrase          | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option.                                                                                                                                      | SNMP      |
+| --authprotocol            | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512.                                                                                                                                        | SNMP      |
+| --privpassphrase          | SNMP v3 only: Privacy pass phrase (privPassword) to encrypt messages using the protocol defined in the --privprotocol option.                                                                                                                 | SNMP      |
+| --privprotocol            | SNMP v3 only: Privacy protocol (privProtocol) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C.                                                                         | SNMP      |
+| --contextname             | SNMP v3 only: Context name (contextName), if relevant for the monitored host.                                                                                                                                                                 | SNMP      |
+| --contextengineid         | SNMP v3 only: Context engine ID (contextEngineID), if relevant for the monitored host, given as a hexadecimal string.                                                                                                                         | SNMP      |
+| --securityengineid        | SNMP v3 only: Security engine ID, given as a hexadecimal string.                                                                                                                                                                              | SNMP      |
+| --snmp-errors-exit        | Expected status in case of SNMP error or timeout. Possible values are warning, critical and unknown (default).                                                                                                                                | SNMP      |
+| --snmp-tls-transport      | Transport protocol for TLS communication (can be: 'dtlsudp', 'tlstcp').                                                                                                                                                                       | SNMP      |
+| --snmp-tls-our-identity   | X.509 certificate to identify ourselves. Can be the path to the certificate file or its contents.                                                                                                                                             | SNMP      |
+| --snmp-tls-their-identity | X.509 certificate to identify the remote host. Can be the path to the certificate file or its contents. This option is unnecessary if the certificate is already trusted by your system.                                                      | SNMP      |
+| --snmp-tls-their-hostname | Common Name (CN) expected in the certificate sent by the host if it differs from the value of the --hostname parameter.                                                                                                                       | SNMP      |
+| --snmp-tls-trust-cert     | A trusted CA certificate used to verify a remote host's certificate. If you use this option, you must also define --snmp-tls-their-hostname.                                                                                                  | SNMP      |
+| --memcached               | Memcached server to use (only one server).                                                                                                                                                                                                    | Retention |
+| --redis-server            | Redis server to use (only one server). Syntax: address\[:port\]                                                                                                                                                                               | Retention |
+| --redis-attribute         | Set Redis Options (--redis-attribute="cnx\_timeout=5").                                                                                                                                                                                       | Retention |
+| --redis-db                | Set Redis database index.                                                                                                                                                                                                                     | Retention |
+| --failback-file           | Failback on a local file if redis connection failed.                                                                                                                                                                                          | Retention |
+| --memexpiration           | Time to keep data in seconds (Default: 86400).                                                                                                                                                                                                | Retention |
+| --statefile-dir           | Define the cache directory (default: '/var/lib/centreon/centplugins').                                                                                                                                                                        | Retention |
+| --statefile-suffix        | Define a suffix to customize the statefile name (Default: '').                                                                                                                                                                                | Retention |
+| --statefile-concat-cwd    | If used with the '--statefile-dir' option, the latter's value will be used as a sub-directory of the current working directory. Useful on Windows when the plugin is compiled, as the file system and permissions are different from Linux.   | Retention |
+| --statefile-format        | Define the format used to store the cache. Available formats: 'dumper', 'storable', 'json' (default).                                                                                                                                         | Retention |
+| --statefile-key           | Define the key to encrypt/decrypt the cache.                                                                                                                                                                                                  | Retention |
+| --statefile-cipher        | Define the cipher algorithm to encrypt the cache (Default: 'AES').                                                                                                                                                                            | Retention |
+| --process-status          | Filter process status. Can be a regexp. (Default: 'running\|runnable').                                                                                                                                                                       | Mode      |
+| --process-name            | Filter process name.                                                                                                                                                                                                                          | Mode      |
+| --regexp-name             | Allows to use regexp to filter process name (with option --process-name).                                                                                                                                                                     | Mode      |
+| --process-path            | Filter process path.                                                                                                                                                                                                                          | Mode      |
+| --regexp-path             | Allows to use regexp to filter process path (with option --process-path).                                                                                                                                                                     | Mode      |
+| --process-args            | Filter process arguments.                                                                                                                                                                                                                     | Mode      |
+| --regexp-args             | Allows to use regexp to filter process arguments (with option --process-args).                                                                                                                                                                | Mode      |
+| --warning                 | Threshold warning of matching processes count.                                                                                                                                                                                                | Mode      |
+| --critical                | Threshold critical of matching processes count.                                                                                                                                                                                               | Mode      |
+| --memory                  | Check memory usage.                                                                                                                                                                                                                           | Mode      |
+| --warning-mem-each        | Threshold warning of memory used by each matching processes (in Bytes).                                                                                                                                                                       | Mode      |
+| --critical-mem-each       | Threshold critical of memory used by each matching processes (in Bytes).                                                                                                                                                                      | Mode      |
+| --warning-mem-total       | Threshold warning of total memory used by matching processes (in Bytes).                                                                                                                                                                      | Mode      |
+| --critical-mem-total      | Threshold critical of total memory used by matching processes (in Bytes).                                                                                                                                                                     | Mode      |
+| --warning-mem-avg         | Threshold warning of average memory used by matching processes (in Bytes).                                                                                                                                                                    | Mode      |
+| --critical-mem-avg        | Threshold critical of average memory used by matching processes (in Bytes).                                                                                                                                                                   | Mode      |
+| --cpu                     | Check cpu usage. Should be used with fix processes. If processespid changes too much, the plugin can't compute values.                                                                                                                        | Mode      |
+| --warning-cpu-total       | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%.                                                         | Mode      |
+| --critical-cpu-total      | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%.                                                        | Mode      |
+| --top                     | Enable top memory usage display.                                                                                                                                                                                                              | Mode      |
+| --top-num                 | Number of processes in top memory display (Default: 5).                                                                                                                                                                                       | Mode      |
+| --top-size                | Minimum memory usage to be in top memory display (Default: 52428800 -\> 50 MB).                                                                                                                                                               | Mode      |
+
+</TabItem>
+</Tabs>
+
+All available options for a given mode can be displayed by adding the
+`--help` parameter to the command:
+
+```bash
+/usr/lib/centreon/plugins//centreon_centreon_poller.pl \
+	--plugin=apps::centreon::local::plugin \
+	--hostname=10.0.0.1 \
+    --help
+```
