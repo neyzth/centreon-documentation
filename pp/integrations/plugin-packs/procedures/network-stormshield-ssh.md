@@ -15,7 +15,7 @@ yum install centreon-plugin-Network-Stormshield-Ssh
 
 ### SSH
 
-SSH key exchange mut be done between poller and monitored server.
+SSH key exchange must be done between poller and monitored server.
 
 ## Centreon Configuration
 
